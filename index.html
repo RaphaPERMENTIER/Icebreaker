@@ -91,8 +91,6 @@ th,td{padding:9px 8px;text-align:center;border-bottom:1px solid #eee;font-size:1
 th{background:#f3f4f6;font-size:12px;text-transform:uppercase;color:var(--mut)}
 td.l,th.l{text-align:left}
 input{font:inherit;font-size:18px;border:1px solid var(--line);border-radius:10px;padding:10px;min-height:50px;width:100%}
-.plan td{font-size:14px;padding:8px 4px}
-.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 #toast{position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));background:var(--warn);color:#fff;padding:12px 14px;border-radius:12px;font-weight:600;display:none;z-index:9;text-align:center}
 #toast.ok{background:var(--ok)}
 a.link{color:var(--ink);font-weight:600}
@@ -145,7 +143,7 @@ function home(){
   if(me)h+=`<a class="btn dark big wide" href="#/equipe/${me.team}">Mon équipe · ${me.team}</a>`;
   h+='<div class="grid">';
   for(let t=1;t<=NT;t++)h+=`<a class="btn big" href="#/equipe/${t}">${t}</a>`;
-  h+='</div><a class="btn wide" style="margin-top:18px" href="#/planning">Planning général</a>';
+  h+='</div>';
   h+='<p class="mut" style="text-align:center;margin-top:28px"><a class="link" href="#/orga">Espace organisateurs</a></p>';
   app.innerHTML=h;
   rpc('public_state').then(s=>setRot(s.rotation)).catch(()=>{});
@@ -182,7 +180,7 @@ function team(t){
     }
     h+=`<div class="row${i===r?' cur':''}${i<r?' done':''}"><div class="t"><b>${i}</b>${hh(i)}</div><div class="bar" style="background:${A[s.k][1]}"></div><div class="d"><b>${A[s.k][0]}</b><div>${who(s)}</div></div>${p}</div>`;
   }
-  h+='<p class="mut">Horaires indicatifs : suivez le signal des organisateurs.</p><a class="btn wide" href="#/planning">Planning général</a>';
+  h+='<p class="mut">Horaires indicatifs : suivez le signal des organisateurs.</p>';
   app.innerHTML=h;
 }
 async function loadTeam(t){
@@ -200,20 +198,6 @@ async function scan(tok){
     if(!d){app.innerHTML='<h1>Code inconnu</h1><p>Ce QR code n\'est pas reconnu. Demandez à un organisateur.</p><a class="btn wide" href="#/">Accueil</a>';return}
     ls.set('me',{team:d.team,token:tok});ls.set('view',d);setRot(d.rotation);location.replace('#/equipe/'+d.team);
   }catch(e){app.innerHTML='<h1>Pas de réseau</h1><p>Impossible de vérifier le code pour le moment.</p><button class="wide dark" onclick="route()">Réessayer</button>'}
-}
-
-/* ---------- Planning général ---------- */
-function planning(){
-  let h='<h1>Planning général</h1><div class="scroll"><table class="plan"><tr><th>Manche</th>';
-  for(const k of K)h+=`<th style="background:${A[k][1]};color:#111">${A[k][0]}</th>`;
-  h+='</tr>';
-  G.forEach((g,i)=>{
-    h+=`<tr${i+1===ROT?' style="background:#fff7d6"':''}><td><b>${i+1}</b><br><span class="mut">${hh(i+1)}</span></td>`;
-    h+=`<td style="white-space:nowrap">${g[0][0].join('+')}<br>vs<br>${g[0][1].join('+')}</td>`;
-    for(let j=1;j<6;j++)h+=`<td style="white-space:nowrap">${g[j].join(' – ')}</td>`;
-    h+=`<td>${g[6].join(', ')}</td><td class="mut">${g[7].join(', ')}</td></tr>`;
-  });
-  app.innerHTML=h+'</table></div><p class="mut">Faites défiler le tableau vers la droite pour voir toutes les épreuves. Les équipes sont indiquées par leur numéro.</p><a class="btn wide" href="#/">Accueil</a>';
 }
 
 /* ---------- Organisateurs ---------- */
@@ -357,7 +341,6 @@ function route(){
   window.scrollTo(0,0);
   if(p[0]==='equipe'&&+p[1]>=1&&+p[1]<=NT){const t=+p[1];team(t);loadTeam(t);timer=setInterval(()=>{if(!document.hidden)loadTeam(t)},20000)}
   else if(p[0]==='k'&&p[1])scan(p[1]);
-  else if(p[0]==='planning')planning();
   else if(p[0]==='orga'){orga();if(code()&&O.data)orgaLoad();timer=setInterval(()=>{if(!document.hidden&&code()&&!O.busy&&!(document.activeElement&&document.activeElement.tagName==='INPUT'))orgaLoad()},20000)}
   else home();
 }
