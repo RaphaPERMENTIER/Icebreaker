@@ -39,12 +39,8 @@ button:disabled{opacity:.5}
 .row .d{flex:1;padding:10px 12px;min-width:0}
 .row .d b{font-size:17px}
 .row .d div{font-size:14px;color:var(--mut)}
-.row .p{flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;padding:8px 12px;font-weight:800;font-size:18px;white-space:nowrap}
-.row .p small{font-weight:500;font-size:12px;color:var(--mut)}
 .row.cur{outline:3px solid var(--dark);outline-offset:-1px}
 .row.done{opacity:.6}
-.total{display:flex;justify-content:space-between;align-items:baseline;font-size:18px}
-.total b{font-size:32px}
 .num{display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:36px;padding:0 7px;border-radius:10px;background:#eceadf;border:1px solid var(--line);font-weight:800;font-size:19px;font-variant-numeric:tabular-nums}
 .num.sm{min-width:28px;height:28px;padding:0 5px;border-radius:8px;font-size:15px}
 .num.xl{min-width:78px;height:78px;border-radius:20px;font-size:44px}
@@ -80,6 +76,15 @@ button:disabled{opacity:.5}
 .st{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--ok);font-weight:800;font-size:18px}
 .st em{font-style:normal;color:var(--mut);font-size:12px}
 .mch .opts{margin:0;padding:0 14px 14px}
+.bo3{padding:0 14px 14px}
+.sc{display:flex;align-items:center;justify-content:center;gap:14px;margin:2px 0 12px}
+.sc b{font-size:34px;font-variant-numeric:tabular-nums}
+.ask{text-align:center;font-weight:700;color:var(--mut);font-size:14px;margin-bottom:8px}
+.adds{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.adds button{min-height:80px;border:2px solid var(--dark)}
+.adds .num{min-width:54px;height:54px;border-radius:14px;font-size:28px}
+.fin{text-align:center;font-weight:700;color:var(--ok);margin-bottom:10px}
+.clr{width:100%;margin-top:10px;min-height:46px;font-size:14px;color:var(--mut)}
 .chlist{padding:0 14px 10px}
 .ch{display:grid;grid-template-columns:56px 1fr 1fr 64px;gap:8px;align-items:center;padding:8px 0;border-top:1px solid #eee}
 .ch input{text-align:center;padding:8px 4px}
@@ -106,7 +111,6 @@ const G=[[[[9,10],[14,16]],[13,18],[5,17],[11,15],[12,19],[4,8],[6],[1,2,3,7]],[
 const K=['beret','tir','gonflable','sumo','parcours','blindtest','chasse','pause'];
 const A={beret:['Béret','#F4B183'],tir:['Tir à la corde','#9DC3E6'],gonflable:['Parcours gonflable','#A9D18E'],sumo:['Sumo','#FFD966'],parcours:['Parcours','#C5A3D9'],blindtest:['Blindtest','#F4A6B7'],chasse:['Chasse au trésor','#8FD3C8'],pause:['Pause','#E3E3E3']};
 const NR=10, NT=19, $=s=>document.querySelector(s), app=$('#app');
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const hh=r=>{const m=14*60+15*(r-1);return Math.floor(m/60)+'h'+String(m%60).padStart(2,'0')};
 const nm=a=>a.join(' + ');
 const chips=(a,c)=>a.map(t=>`<span class="num${c?' '+c:''}">${t}</span>`).join('');
@@ -133,8 +137,8 @@ async function rpc(fn,args){
   return r.json();
 }
 function toast(m,ok){const t=$('#toast');t.textContent=m;t.className=ok?'ok':'';t.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.display='none',2600)}
-function setRot(n){if(typeof n!=='number')return;ROT=n;ls.set('rot',n);$('#hrot').textContent=n<1?'Début 14h00':n>NR?'Terminé':'Manche '+n+' / '+NR}
-const rotLabel=n=>n<1?'Pas commencé':n>NR?'Terminé':'Manche '+n;
+function setRot(n){if(typeof n!=='number')return;ROT=n;ls.set('rot',n);$('#hrot').textContent=n<1?'Début 14h00':n>NR?'Terminé':'Rotation '+n+' / '+NR}
+const rotLabel=n=>n<1?'Pas commencé':n>NR?'Terminé':'Rotation '+n;
 
 /* ---------- Accueil ---------- */
 function home(){
@@ -151,44 +155,28 @@ function home(){
 
 /* ---------- Page équipe ---------- */
 function team(t){
-  const me=ls.get('me'), mine=me&&me.team===t, data=mine?ls.get('view'):null;
-  const res={}; if(data)for(const x of data.results)res[x.rotation]=x;
+  const me=ls.get('me'), mine=me&&me.team===t;
   let h=`<div class="teamhead"><span class="num xl">${t}</span><span class="lab">${mine?'Votre équipe':'Équipe'}</span></div>`;
   const r=ROT;
   if(r>=1&&r<=NR){
     const s=slot(t,r), n=r<NR?slot(t,r+1):null;
-    h+=`<div class="card now"><div class="lab">Maintenant · manche ${r}</div><div class="act">${A[s.k][0]}</div><div class="who">${who(s)}</div>`+
-       (n?`<div class="next">Ensuite : <b>${A[n.k][0]}</b> — ${who(n)}</div>`:'<div class="next">C\'est la dernière manche !</div>')+'</div>';
+    h+=`<div class="card now"><div class="lab">Maintenant · rotation ${r}</div><div class="act">${A[s.k][0]}</div><div class="who">${who(s)}</div>`+
+       (n?`<div class="next">Ensuite : <b>${A[n.k][0]}</b> — ${who(n)}</div>`:'<div class="next">C\'est la dernière rotation !</div>')+'</div>';
   }else if(r<1){
     const s=slot(t,1);
     h+=`<div class="card now"><div class="lab">Début à 14h00</div><div class="act">${A[s.k][0]}</div><div class="who">${who(s)}</div></div>`;
   }else h+='<div class="card now"><div class="act">C\'est terminé, bravo !</div><div class="who">Rendez-vous pour la remise des prix.</div></div>';
-  if(mine&&data){
-    let tot=0;for(const x of data.results)tot+=x.points;
-    const cp=data.chasse&&data.chasse.points;
-    if(cp)tot+=cp;
-    h+=`<div class="card total"><span>Vos points${data.chasse&&!cp?' <span class="mut">(hors chasse au trésor)</span>':''}</span><b>${tot}</b></div>`;
-  }else if(mine)h+='<div class="card mut">Chargement de vos points…</div>';
-  else h+='<div class="card mut">Pour voir vos points, scannez le QR code de votre équipe.</div>';
+  h+='<div class="card mut">Les points et le classement sont tenus par les organisateurs. Résultats à la remise des prix !</div>';
   h+='<h2>Votre parcours</h2>';
   for(let i=1;i<=NR;i++){
-    const s=slot(t,i), x=res[i];
-    let p='';
-    if(mine&&data){
-      if(s.k==='chasse'&&data.chasse){const c=data.chasse,m=Math.floor(c.seconds/60),sec=String(c.seconds%60).padStart(2,'0');p=`<div class="p">${c.points?c.points+' pts':m+':'+sec}<small>${c.points?m+':'+sec:'points à la fin'}</small></div>`}
-      else if(x)p=`<div class="p">${x.points} pts<small>${esc(x.detail)}</small></div>`;
-    }
-    h+=`<div class="row${i===r?' cur':''}${i<r?' done':''}"><div class="t"><b>${i}</b>${hh(i)}</div><div class="bar" style="background:${A[s.k][1]}"></div><div class="d"><b>${A[s.k][0]}</b><div>${who(s)}</div></div>${p}</div>`;
+    const s=slot(t,i);
+    h+=`<div class="row${i===r?' cur':''}${i<r?' done':''}"><div class="t"><b>${i}</b>${hh(i)}</div><div class="bar" style="background:${A[s.k][1]}"></div><div class="d"><b>${A[s.k][0]}</b><div>${who(s)}</div></div></div>`;
   }
   h+='<p class="mut">Horaires indicatifs : suivez le signal des organisateurs.</p>';
   app.innerHTML=h;
 }
 async function loadTeam(t){
-  const me=ls.get('me');
-  try{
-    if(me&&me.team===t){const d=await rpc('team_view',{p_token:me.token});if(d){ls.set('view',d);setRot(d.rotation)}}
-    else{const s=await rpc('public_state');setRot(s.rotation)}
-  }catch(e){}
+  try{const s=await rpc('public_state');setRot(s.rotation)}catch(e){}
   if(location.hash==='#/equipe/'+t)team(t);
 }
 async function scan(tok){
@@ -196,12 +184,13 @@ async function scan(tok){
   try{
     const d=await rpc('team_view',{p_token:tok});
     if(!d){app.innerHTML='<h1>Code inconnu</h1><p>Ce QR code n\'est pas reconnu. Demandez à un organisateur.</p><a class="btn wide" href="#/">Accueil</a>';return}
-    ls.set('me',{team:d.team,token:tok});ls.set('view',d);setRot(d.rotation);location.replace('#/equipe/'+d.team);
+    ls.set('me',{team:d.team,token:tok});ls.del('view');setRot(d.rotation);location.replace('#/equipe/'+d.team);
   }catch(e){app.innerHTML='<h1>Pas de réseau</h1><p>Impossible de vérifier le code pour le moment.</p><button class="wide dark" onclick="route()">Réessayer</button>'}
 }
 
 /* ---------- Organisateurs ---------- */
 const ACTS=[...K.slice(0,6),'chasse'];
+const BO3=['tir','gonflable','sumo'], MB=3, PM=2; // 3 manches, 2 points par manche gagnée
 let O={data:null,busy:false,open:{},act:null,scroll:false};
 const code=()=>{try{return sessionStorage.getItem('orga')||localStorage.getItem('orga')}catch(e){return null}};
 function orgaLogin(msg){
@@ -223,15 +212,17 @@ function manche(k,r){ // la rencontre d'une activité à la manche r
   if(i<6)return{k,r,a:[g[i][0]],b:[g[i][1]]};
   return{k,r,teams:g[i]};
 }
-function options(m){
-  const a=nm(m.a), b=nm(m.b);
-  if(m.k==='sumo')return[[a+' gagne · 2 restants',6,0,'Victoire (2 restants)','Défaite'],[a+' gagne · 1 restant',3,0,'Victoire (1 restant)','Défaite'],['Égalité',2,2,'Égalité','Égalité'],[b+' gagne · 1 restant',0,3,'Défaite','Victoire (1 restant)'],[b+' gagne · 2 restants',0,6,'Défaite','Victoire (2 restants)']];
-  const v=m.a.length>1?' gagnent':' gagne';
+function options(m){ // épreuves notées en une rencontre : béret, parcours, blindtest
+  const a=nm(m.a), b=nm(m.b), v=m.a.length>1?' gagnent':' gagne';
   return[[a+v,5,0,'Victoire','Défaite'],['Égalité',2,2,'Égalité','Égalité'],[b+v,0,5,'Défaite','Victoire']];
 }
 function pts(r,k,t){const x=O.data.results.find(x=>x.rotation===r&&x.activity===k&&x.team===t);return x?x.points:null}
-function done(k){let n=0;for(let r=1;r<=NR;r++)if(pts(r,k,manche(k,r).a[0])!==null)n++;return n}
-const isOpen=(k,r)=>O.open[r]!==undefined?O.open[r]:pts(r,k,manche(k,r).a[0])===null;
+const bo3=k=>BO3.includes(k);
+const dtl=(a,b)=>'Manches '+a+'–'+b;
+function wins(r,k,m){const pa=pts(r,k,m.a[0]);return pa===null?null:[pa/PM,(pts(r,k,m.b[0])||0)/PM]} // manches gagnées, relues depuis les points
+function full(k,r,m){const w=bo3(k)?wins(r,k,m):null;return bo3(k)?!!w&&w[0]+w[1]>=MB:pts(r,k,m.a[0])!==null}
+function done(k){let n=0;for(let r=1;r<=NR;r++)if(full(k,r,manche(k,r)))n++;return n}
+const isOpen=(k,r)=>O.open[r]!==undefined?O.open[r]:!full(k,r,manche(k,r));
 
 function orga(){
   if(!code())return orgaLogin();
@@ -245,7 +236,7 @@ function orgaHome(){
   const d=O.data, last=ls.get('act');
   O.act=null;
   let h='<h1>Organisateurs</h1>';
-  h+=`<div class="card"><div class="mut">Manche affichée aux équipes</div><div class="stepper"><button data-rot="${d.rotation-1}" ${d.rotation<1?'disabled':''} aria-label="Manche précédente">◀</button><div>${rotLabel(d.rotation)}</div><button class="dark" data-rot="${d.rotation+1}" ${d.rotation>NR?'disabled':''} aria-label="Manche suivante">▶</button></div></div>`;
+  h+=`<div class="card"><div class="mut">Rotation affichée aux équipes</div><div class="stepper"><button data-rot="${d.rotation-1}" ${d.rotation<1?'disabled':''} aria-label="Rotation précédente">◀</button><div>${rotLabel(d.rotation)}</div><button class="dark" data-rot="${d.rotation+1}" ${d.rotation>NR?'disabled':''} aria-label="Rotation suivante">▶</button></div></div>`;
   h+='<h2>Quelle activité animez-vous ?</h2>';
   if(last&&ACTS.includes(last))h+=`<a class="btn dark big wide" href="#/orga/${last}">Continuer · ${A[last][0]}</a>`;
   h+='<div class="acts">';
@@ -264,23 +255,36 @@ function orgaAct(k){
   let h=`<a class="back" href="#/orga">◀ Activités</a><div class="ahead" style="--c:${A[k][1]}"><div class="mut">Vous animez</div><h1>${A[k][0]}</h1></div>`;
   if(k==='chasse')h+=chasse();
   else{
-    h+=`<div class="prog"><b>${done(k)}/${NR}</b> manches enregistrées · touchez une manche pour l'ouvrir ou la replier</div>`;
+    h+=`<div class="prog"><b>${done(k)}/${NR}</b> rotations enregistrées${bo3(k)?` · ${MB} manches, ${PM} pts par manche gagnée`:''}</div>`;
     for(let r=1;r<=NR;r++){
-      const m=manche(k,r), o=options(m), pa=pts(r,k,m.a[0]), pb=pts(r,k,m.b[0]);
-      const saved=pa!==null, sel=saved?o.findIndex(x=>x[1]===pa&&x[2]===pb):-1, open=isOpen(k,r), live=r===d.rotation;
-      let sub=hh(r);
+      const m=manche(k,r), open=isOpen(k,r), live=r===d.rotation, fin=full(k,r,m);
+      let sub=hh(r), body='';
       if(live)sub+=' · <b>en cours</b>';
-      if(saved)sub+=' · '+(sel>-1?o[sel][0]+' ('+o[sel][1]+'–'+o[sel][2]+')':pa+'–'+pb);
-      h+=`<div class="card mch${live?' live':''}${saved?' ok':''}">`+
-         `<button class="mhead" data-open="${r}" aria-expanded="${open}"><span class="mno">${r}</span><span class="mi"><span class="vs">${chips(m.a)}<em>contre</em>${chips(m.b)}</span><small>${sub}</small></span><span class="st">${saved?'✓':''}<em>${open?'▲':'▼'}</em></span></button>`;
-      if(open){
-        h+='<div class="opts">';
-        o.forEach((x,i)=>{h+=`<button data-k="${k}" data-r="${r}" data-i="${i}" class="${pa===x[1]&&pb===x[2]?'on':''}">${x[0]}<span>${x[1]} – ${x[2]}</span></button>`});
-        h+='</div>';
+      if(bo3(k)){
+        const w=wins(r,k,m)||[0,0], np=w[0]+w[1];
+        if(np)sub+=' · '+w[0]+' – '+w[1]+(fin?` (${w[0]*PM}–${w[1]*PM} pts)`:' · manche '+(np+1)+'/'+MB);
+        if(open){
+          body=`<div class="bo3"><div class="sc"><span class="num">${m.a[0]}</span><b>${w[0]} – ${w[1]}</b><span class="num">${m.b[0]}</span></div>`;
+          if(fin)body+=`<div class="fin">${MB} manches jouées · ${w[0]>w[1]?m.a[0]:m.b[0]} gagne · ${w[0]*PM} – ${w[1]*PM} pts</div>`;
+          else body+=`<div class="ask">Qui gagne la manche ${np+1} ?</div><div class="adds">`+
+            `<button data-add="a" data-k="${k}" data-r="${r}" aria-label="Manche gagnée par l'équipe ${m.a[0]}"><span class="num">${m.a[0]}</span></button>`+
+            `<button data-add="b" data-k="${k}" data-r="${r}" aria-label="Manche gagnée par l'équipe ${m.b[0]}"><span class="num">${m.b[0]}</span></button></div>`;
+          if(np)body+=`<button class="clr" data-clr="1" data-k="${k}" data-r="${r}">Effacer la rencontre</button>`;
+          body+='</div>';
+        }
+      }else{
+        const o=options(m), pa=pts(r,k,m.a[0]), pb=pts(r,k,m.b[0]), sel=pa!==null?o.findIndex(x=>x[1]===pa&&x[2]===pb):-1;
+        if(pa!==null)sub+=' · '+(sel>-1?o[sel][0]+` (${o[sel][1]}–${o[sel][2]})`:pa+'–'+pb);
+        if(open){
+          body='<div class="opts">';
+          o.forEach((x,i)=>{body+=`<button data-k="${k}" data-r="${r}" data-i="${i}" class="${pa===x[1]&&pb===x[2]?'on':''}">${x[0]}<span>${x[1]} – ${x[2]}</span></button>`});
+          body+='</div>';
+        }
       }
-      h+='</div>';
+      h+=`<div class="card mch${live?' live':''}${fin?' ok':''}">`+
+         `<button class="mhead" data-open="${r}" aria-expanded="${open}"><span class="mno">${r}</span><span class="mi"><span class="vs">${chips(m.a)}<em>contre</em>${chips(m.b)}</span><small>${sub}</small></span><span class="st">${fin?'✓':''}<em>${open?'▲':'▼'}</em></span></button>`+body+'</div>';
     }
-    h+='<p class="mut">Touchez le résultat pour l\'enregistrer, touchez-le à nouveau pour l\'effacer.</p>';
+    h+=`<p class="mut">${bo3(k)?'Notez chaque manche dès qu\'elle est finie : le score est enregistré au fur et à mesure.':'Touchez le résultat pour l\'enregistrer, touchez-le à nouveau pour l\'effacer.'}</p>`;
   }
   app.innerHTML=h;
   if(O.scroll){O.scroll=false;const el=document.querySelector('.mch.live');if(el)setTimeout(()=>el.scrollIntoView({block:'center',behavior:'smooth'}),80)}
@@ -317,6 +321,14 @@ app.addEventListener('click',async e=>{
   if(O.busy)return;
   let call, after;
   if(ds.rot!==undefined){const n=+ds.rot;call=()=>rpc('orga_rotation',{p_code:code(),p_n:n})}
+  else if(ds.add!==undefined||ds.clr!==undefined){
+    const k=ds.k, r=+ds.r, m=manche(k,r), w=wins(r,k,m)||[0,0], clear=ds.clr!==undefined;
+    if(!clear&&w[0]+w[1]>=MB)return toast('Les '+MB+' manches sont déjà notées');
+    if(!clear)w[ds.add==='a'?0:1]++;
+    const rows=[...m.a.map(t=>({team:t,points:clear?null:w[0]*PM,detail:dtl(w[0],w[1])})),...m.b.map(t=>({team:t,points:clear?null:w[1]*PM,detail:dtl(w[1],w[0])}))];
+    call=()=>rpc('orga_save',{p_code:code(),p_rotation:r,p_activity:k,p_rows:rows});
+    after=()=>{O.open[r]=clear||w[0]+w[1]<MB};
+  }
   else if(ds.k){
     const r=+ds.r, m=manche(ds.k,r), o=options(m)[+ds.i], clear=b.classList.contains('on');
     const rows=[...m.a.map(t=>({team:t,points:clear?null:o[1],detail:o[3]})),...m.b.map(t=>({team:t,points:clear?null:o[2],detail:o[4]}))];
