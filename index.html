@@ -84,6 +84,7 @@ button:disabled{opacity:.5}
 .adds button{min-height:80px;border:2px solid var(--dark)}
 .adds .num{min-width:54px;height:54px;border-radius:14px;font-size:28px}
 .fin{text-align:center;font-weight:700;color:var(--ok);margin-bottom:10px}
+.opt{font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em;background:#f3f4f6;border-radius:999px;padding:2px 8px;margin-left:4px}
 .clr{width:100%;margin-top:10px;min-height:46px;font-size:14px;color:var(--mut)}
 .chlist{padding:0 14px 10px}
 .ch{display:grid;grid-template-columns:56px 1fr 1fr 64px;gap:8px;align-items:center;padding:8px 0;border-top:1px solid #eee}
@@ -190,7 +191,8 @@ async function scan(tok){
 
 /* ---------- Organisateurs ---------- */
 const ACTS=[...K.slice(0,6),'chasse'];
-const BO3=['tir','gonflable','sumo'], MB=3, PM=2; // 3 manches, 2 points par manche gagnée
+const BO3=['tir','gonflable','sumo'], MB=3, PM=2, MX={sumo:5}; // 3 manches (5 pour le sumo : 3 + 2 bonus), 2 points par manche gagnée
+const mx=k=>MX[k]||MB;
 let O={data:null,busy:false,open:{},act:null,scroll:false};
 const code=()=>{try{return sessionStorage.getItem('orga')||localStorage.getItem('orga')}catch(e){return null}};
 function orgaLogin(msg){
@@ -255,18 +257,18 @@ function orgaAct(k){
   let h=`<a class="back" href="#/orga">◀ Activités</a><div class="ahead" style="--c:${A[k][1]}"><div class="mut">Vous animez</div><h1>${A[k][0]}</h1></div>`;
   if(k==='chasse')h+=chasse();
   else{
-    h+=`<div class="prog"><b>${done(k)}/${NR}</b> rotations enregistrées${bo3(k)?` · ${MB} manches, ${PM} pts par manche gagnée`:''}</div>`;
+    h+=`<div class="prog"><b>${done(k)}/${NR}</b> rotations enregistrées${bo3(k)?` · ${mx(k)>MB?`${mx(k)} manches possibles (${MB} + ${mx(k)-MB} bonus)`:`${MB} manches`}, ${PM} pts par manche gagnée`:''}</div>`;
     for(let r=1;r<=NR;r++){
       const m=manche(k,r), open=isOpen(k,r), live=r===d.rotation, fin=full(k,r,m);
       let sub=hh(r), body='';
       if(live)sub+=' · <b>en cours</b>';
       if(bo3(k)){
-        const w=wins(r,k,m)||[0,0], np=w[0]+w[1];
+        const w=wins(r,k,m)||[0,0], np=w[0]+w[1], top=mx(k);
         if(np)sub+=' · '+w[0]+' – '+w[1]+(fin?` (${w[0]*PM}–${w[1]*PM} pts)`:' · manche '+(np+1)+'/'+MB);
         if(open){
           body=`<div class="bo3"><div class="sc"><span class="num">${m.a[0]}</span><b>${w[0]} – ${w[1]}</b><span class="num">${m.b[0]}</span></div>`;
-          if(fin)body+=`<div class="fin">${MB} manches jouées · ${w[0]>w[1]?m.a[0]:m.b[0]} gagne · ${w[0]*PM} – ${w[1]*PM} pts</div>`;
-          else body+=`<div class="ask">Qui gagne la manche ${np+1} ?</div><div class="adds">`+
+          if(fin)body+=`<div class="fin">${np} manches jouées · ${w[0]===w[1]?'égalité':(w[0]>w[1]?m.a[0]:m.b[0])+' gagne'} · ${w[0]*PM} – ${w[1]*PM} pts</div>`;
+          if(np<top)body+=`<div class="ask">Qui gagne la manche ${np>=MB?'bonus ':''}${np+1} ?${np>=MB?' <span class="opt">facultative</span>':''}</div><div class="adds">`+
             `<button data-add="a" data-k="${k}" data-r="${r}" aria-label="Manche gagnée par l'équipe ${m.a[0]}"><span class="num">${m.a[0]}</span></button>`+
             `<button data-add="b" data-k="${k}" data-r="${r}" aria-label="Manche gagnée par l'équipe ${m.b[0]}"><span class="num">${m.b[0]}</span></button></div>`;
           if(np)body+=`<button class="clr" data-clr="1" data-k="${k}" data-r="${r}">Effacer la rencontre</button>`;
@@ -284,7 +286,7 @@ function orgaAct(k){
       h+=`<div class="card mch${live?' live':''}${fin?' ok':''}">`+
          `<button class="mhead" data-open="${r}" aria-expanded="${open}"><span class="mno">${r}</span><span class="mi"><span class="vs">${chips(m.a)}<em>contre</em>${chips(m.b)}</span><small>${sub}</small></span><span class="st">${fin?'✓':''}<em>${open?'▲':'▼'}</em></span></button>`+body+'</div>';
     }
-    h+=`<p class="mut">${bo3(k)?'Notez chaque manche dès qu\'elle est finie : le score est enregistré au fur et à mesure.':'Touchez le résultat pour l\'enregistrer, touchez-le à nouveau pour l\'effacer.'}</p>`;
+    h+=`<p class="mut">${bo3(k)?'Notez chaque manche dès qu\'elle est finie : le score est enregistré au fur et à mesure.'+(mx(k)>MB?` Au-delà de ${MB} manches, les ${mx(k)-MB} manches bonus rapportent autant que les autres.`:''):'Touchez le résultat pour l\'enregistrer, touchez-le à nouveau pour l\'effacer.'}</p>`;
   }
   app.innerHTML=h;
   if(O.scroll){O.scroll=false;const el=document.querySelector('.mch.live');if(el)setTimeout(()=>el.scrollIntoView({block:'center',behavior:'smooth'}),80)}
@@ -323,11 +325,11 @@ app.addEventListener('click',async e=>{
   if(ds.rot!==undefined){const n=+ds.rot;call=()=>rpc('orga_rotation',{p_code:code(),p_n:n})}
   else if(ds.add!==undefined||ds.clr!==undefined){
     const k=ds.k, r=+ds.r, m=manche(k,r), w=wins(r,k,m)||[0,0], clear=ds.clr!==undefined;
-    if(!clear&&w[0]+w[1]>=MB)return toast('Les '+MB+' manches sont déjà notées');
+    if(!clear&&w[0]+w[1]>=mx(k))return toast('Les '+mx(k)+' manches sont déjà notées');
     if(!clear)w[ds.add==='a'?0:1]++;
     const rows=[...m.a.map(t=>({team:t,points:clear?null:w[0]*PM,detail:dtl(w[0],w[1])})),...m.b.map(t=>({team:t,points:clear?null:w[1]*PM,detail:dtl(w[1],w[0])}))];
     call=()=>rpc('orga_save',{p_code:code(),p_rotation:r,p_activity:k,p_rows:rows});
-    after=()=>{O.open[r]=clear||w[0]+w[1]<MB};
+    after=()=>{O.open[r]=clear||w[0]+w[1]<mx(k)};
   }
   else if(ds.k){
     const r=+ds.r, m=manche(ds.k,r), o=options(m)[+ds.i], clear=b.classList.contains('on');
