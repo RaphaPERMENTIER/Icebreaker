@@ -69,6 +69,7 @@ a.link{color:var(--ink);font-weight:700;text-underline-offset:3px}
 .now .who{font-size:17px;color:rgba(255,255,255,.88)}
 .now .next{margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.16);font-size:14px;color:rgba(255,255,255,.78)}
 .now .next b{color:#fff}
+.now .loc{margin-top:12px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:var(--r3);padding:9px 11px;font-size:15px;font-weight:600;color:#fff}
 
 /* ---------- Parcours de l'équipe ---------- */
 .row{display:flex;align-items:stretch;background:var(--card);border:1px solid var(--line);border-radius:var(--r2);margin:8px 0;overflow:hidden;box-shadow:var(--sh)}
@@ -78,6 +79,7 @@ a.link{color:var(--ink);font-weight:700;text-underline-offset:3px}
 .row .d{flex:1;padding:11px 14px;min-width:0}
 .row .d b{font-size:16px;letter-spacing:-.01em}
 .row .d div{font-size:13px;color:var(--mut);margin-top:1px}
+.row .d .loc2{font-size:12.5px;color:var(--ink);font-weight:600;margin-top:3px}
 .row.cur{border-color:var(--dark);box-shadow:inset 0 0 0 1px var(--dark),var(--sh)}
 .row.cur .t{background:var(--dark);border-right-color:var(--dark)}
 .row.cur .t b,.row.cur .t{color:#fff}
@@ -102,6 +104,11 @@ a.link{color:var(--ink);font-weight:700;text-underline-offset:3px}
 .ahead h1{margin:3px 0 0;font-size:23px}
 .prog{font-size:14px;color:var(--mut);margin:16px 0 6px;line-height:1.5}
 .prog b{color:var(--ink)}
+.nt{margin:0 0 4px}
+.ntl{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--soft);font-weight:800;margin-bottom:9px}
+.ntb{display:grid;grid-template-columns:1fr auto;gap:9px;margin-top:9px}
+.ntb .clr{width:auto;margin:0;padding:0 16px}
+.ntp{margin-top:11px;background:var(--fill);border:1px solid var(--line);border-radius:var(--r3);padding:9px 11px;font-size:14px;font-weight:600}
 
 /* ---------- Organisateurs : rencontres ---------- */
 .mch{padding:0;overflow:hidden}
@@ -148,6 +155,13 @@ a.link{color:var(--ink);font-weight:700;text-underline-offset:3px}
 .cht small{color:var(--ok);font-size:10px;font-weight:700;white-space:nowrap}
 
 /* ---------- Classement ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 10px}
+.chip{min-height:40px;padding:0 13px;border-radius:999px;font-size:13.5px;font-weight:700;box-shadow:none;background:#fff;color:var(--mut)}
+.chip.on{background:var(--dark);border-color:var(--dark);color:#fff}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:0 0 12px;border:1px solid var(--line);border-radius:var(--r2);overflow:hidden;background:#fff;box-shadow:var(--sh)}
+.seg button{min-height:46px;border:0;border-radius:0;font-size:14px;font-weight:700;color:var(--mut);box-shadow:none;background:transparent}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button.on{background:var(--dark);color:#fff}
 .tw{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r2);box-shadow:var(--sh)}
 table{width:100%;border-collapse:collapse;background:#fff}
 th,td{padding:10px 8px;text-align:center;border-bottom:1px solid var(--line2);font-size:15px;font-variant-numeric:tabular-nums}
@@ -180,7 +194,12 @@ const hh=r=>{const m=14*60+15*(r-1);return Math.floor(m/60)+'h'+String(m%60).pad
 const nm=a=>a.join(' + ');
 const chips=(a,c)=>a.map(t=>`<span class="num${c?' '+c:''}">${t}</span>`).join('');
 const ls={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+const EC={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>EC[c]); // les messages sont saisis à la main : jamais injectés brut
 let ROT=ls.get('rot')??0, timer=null;
+let NOTES=ls.get('notes')||{}; // message de lieu par activité, partagé par les organisateurs
+function setNotes(n){if(n&&typeof n==='object'){NOTES=n;ls.set('notes',n)}}
+const note=k=>NOTES[k]||'';
 
 function slot(t,r){ // ce que fait l'équipe t à la rotation r (1..10)
   const g=G[r-1];
@@ -215,7 +234,7 @@ function home(){
   h+='</div>';
   h+='<p class="mut" style="text-align:center;margin-top:30px"><a class="link" href="#/orga">Espace organisateurs</a></p>';
   app.innerHTML=h;
-  rpc('public_state').then(s=>setRot(s.rotation)).catch(()=>{});
+  rpc('public_state').then(s=>{setRot(s.rotation);setNotes(s.notes)}).catch(()=>{});
 }
 
 /* ---------- Page équipe ---------- */
@@ -226,22 +245,24 @@ function team(t){
   if(r>=1&&r<=NR){
     const s=slot(t,r), n=r<NR?slot(t,r+1):null;
     h+=`<div class="card now"><div class="lab">Maintenant · rotation ${r}</div><div class="nm">${A[s.k][0]}</div><div class="who">${who(s)}</div>`+
-       (n?`<div class="next">Ensuite : <b>${A[n.k][0]}</b> — ${who(n)}</div>`:'<div class="next">C\'est la dernière rotation !</div>')+'</div>';
+       (note(s.k)?`<div class="loc">📍 ${esc(note(s.k))}</div>`:'')+
+       (n?`<div class="next">Ensuite : <b>${A[n.k][0]}</b> — ${who(n)}${note(n.k)?` · 📍 ${esc(note(n.k))}`:''}</div>`:'<div class="next">C\'est la dernière rotation !</div>')+'</div>';
   }else if(r<1){
     const s=slot(t,1);
-    h+=`<div class="card now"><div class="lab">Début à 14h00</div><div class="nm">${A[s.k][0]}</div><div class="who">${who(s)}</div></div>`;
+    h+=`<div class="card now"><div class="lab">Début à 14h00</div><div class="nm">${A[s.k][0]}</div><div class="who">${who(s)}</div>`+
+       (note(s.k)?`<div class="loc">📍 ${esc(note(s.k))}</div>`:'')+'</div>';
   }else h+='<div class="card now"><div class="nm">C\'est terminé, bravo !</div><div class="who">Rendez-vous pour la remise des prix.</div></div>';
   h+='<div class="card mut">Les points et le classement sont tenus par les organisateurs. Résultats à la remise des prix !</div>';
   h+='<h2>Votre parcours</h2>';
   for(let i=1;i<=NR;i++){
     const s=slot(t,i);
-    h+=`<div class="row${i===r?' cur':''}${i<r?' done':''}"><div class="t"><b>${i}</b>${hh(i)}</div><div class="bar" style="background:${A[s.k][1]}"></div><div class="d"><b>${A[s.k][0]}</b>${i===r?'<span class="tag">En cours</span>':''}<div>${who(s)}</div></div></div>`;
+    h+=`<div class="row${i===r?' cur':''}${i<r?' done':''}"><div class="t"><b>${i}</b>${hh(i)}</div><div class="bar" style="background:${A[s.k][1]}"></div><div class="d"><b>${A[s.k][0]}</b>${i===r?'<span class="tag">En cours</span>':''}<div>${who(s)}</div>${note(s.k)?`<div class="loc2">📍 ${esc(note(s.k))}</div>`:''}</div></div>`;
   }
   h+='<p class="mut">Horaires indicatifs : suivez le signal des organisateurs.</p>';
   app.innerHTML=h;
 }
 async function loadTeam(t){
-  try{const s=await rpc('public_state');setRot(s.rotation)}catch(e){}
+  try{const s=await rpc('public_state');setRot(s.rotation);setNotes(s.notes)}catch(e){}
   if(location.hash==='#/equipe/'+t)team(t);
 }
 async function scan(tok){
@@ -249,7 +270,7 @@ async function scan(tok){
   try{
     const d=await rpc('team_view',{p_token:tok});
     if(!d){app.innerHTML='<h1>Code inconnu</h1><p class="lead">Ce QR code n\'est pas reconnu. Demandez à un organisateur.</p><a class="btn wide" href="#/">Accueil</a>';return}
-    ls.set('me',{team:d.team,token:tok});ls.del('view');setRot(d.rotation);location.replace('#/equipe/'+d.team);
+    ls.set('me',{team:d.team,token:tok});ls.del('view');setRot(d.rotation);setNotes(d.notes);location.replace('#/equipe/'+d.team);
   }catch(e){app.innerHTML='<h1>Pas de réseau</h1><p class="lead">Impossible de vérifier le code pour le moment.</p><button class="wide dark" onclick="route()">Réessayer</button>'}
 }
 
@@ -263,13 +284,13 @@ function orgaLogin(msg){
   app.innerHTML=`<h1>Espace organisateurs</h1><p class="lead">Réservé à l'équipe d'animation.</p><div class="card"><input id="c" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Code organisateur" aria-label="Code organisateur"><button class="dark wide" id="go">Entrer</button>${msg?`<p style="color:var(--warn);font-weight:600;margin:4px 0 0">${msg}</p>`:''}</div><p class="mut" style="text-align:center"><a class="link" href="#/">Retour à l'accueil</a></p>`;
   const go=async()=>{
     const v=$('#c').value.trim();if(!v)return;$('#go').disabled=true;
-    try{const d=await rpc('orga_all',{p_code:v});if(!d)return orgaLogin('Code incorrect.');try{localStorage.setItem('orga',v)}catch(e){}O.data=d;setRot(d.rotation);orga()}
+    try{const d=await rpc('orga_all',{p_code:v});if(!d)return orgaLogin('Code incorrect.');try{localStorage.setItem('orga',v)}catch(e){}O.data=d;setRot(d.rotation);setNotes(d.notes);orga()}
     catch(e){orgaLogin('Pas de réseau, réessayez.')}
   };
   $('#go').onclick=go;$('#c').onkeydown=e=>{if(e.key==='Enter')go()};
 }
 async function orgaLoad(){
-  try{const d=await rpc('orga_all',{p_code:code()});if(!d){ls.del('orga');return orgaLogin('Code incorrect.')}O.data=d;setRot(d.rotation);if(location.hash.startsWith('#/orga')&&!O.busy)orga()}
+  try{const d=await rpc('orga_all',{p_code:code()});if(!d){ls.del('orga');return orgaLogin('Code incorrect.')}O.data=d;setRot(d.rotation);setNotes(d.notes);if(location.hash.startsWith('#/orga')&&!O.busy)orga()}
   catch(e){if(!O.data)orgaLogin('Pas de réseau, réessayez.')}
 }
 function manche(k,r){ // la rencontre d'une activité à la manche r
@@ -319,6 +340,11 @@ function orgaAct(k){
   const d=O.data;
   if(O.act!==k){O.act=k;O.open={};O.scroll=true;ls.set('act',k)}
   let h=`<a class="back" href="#/orga">◀ Activités</a><div class="ahead" style="--c:${A[k][1]}"><div class="mut">Vous animez</div><h1>${A[k][0]}</h1></div>`;
+  h+=`<div class="card nt"><div class="ntl">Où aller · message affiché aux équipes</div>`+
+     `<input id="nt" maxlength="120" autocomplete="off" placeholder="Ex. : grand pré, derrière les tentes" aria-label="Message de lieu pour ${A[k][0]}" value="${esc(note(k))}">`+
+     `<div class="ntb"><button class="dark" data-note="${k}">Enregistrer</button>`+
+     `<button class="clr" data-notedel="${k}" ${note(k)?'':'disabled'}>Effacer</button></div>`+
+     (note(k)?`<div class="ntp">📍 ${esc(note(k))}</div>`:'<div class="mut" style="margin:10px 0 0">Aucun message : les équipes ne voient que le nom de l\'activité.</div>')+'</div>';
   if(k==='chasse')h+=chasse();
   else{
     h+=`<div class="prog"><b>${done(k)}/${NR}</b> rotations enregistrées${bo3(k)?` · ${mx(k)>MB?`${mx(k)} manches possibles (${MB} + ${mx(k)-MB} bonus)`:`${MB} manches`}, ${PM} pts par manche gagnée`:''}</div>`;
@@ -374,21 +400,42 @@ function chasse(){
   }
   return h+'<p class="mut">Touchez ✕ pour supprimer un temps déjà saisi.</p>';
 }
+let RK={act:'',chasse:true}; // act:'' = toutes les épreuves ; chasse:false = classement hors chasse au trésor
 function orgaRank(){
-  const d=O.data, rows=[];
+  const d=O.data, sel=RK.act, all=sel==='';
+  const showEp=sel!=='chasse', showCh=sel==='chasse'||(all&&RK.chasse), both=showEp&&showCh;
   O.act=null;
-  for(let t=1;t<=NT;t++){const e=d.results.filter(x=>x.team===t), c=d.chasse.find(x=>x.team===t);const ep=e.reduce((s,x)=>s+x.points,0), cp=c?c.points:0;rows.push({t,ep,cp,has:!!c,tot:ep+cp})}
+  const rows=[];
+  for(let t=1;t<=NT;t++){
+    const ep=showEp?d.results.filter(x=>x.team===t&&(all||x.activity===sel)).reduce((s,x)=>s+x.points,0):0;
+    const c=d.chasse.find(x=>x.team===t), cp=showCh&&c?c.points:0;
+    rows.push({t,ep,cp,has:!!c,tot:ep+cp});
+  }
   rows.sort((a,b)=>b.tot-a.tot||a.t-b.t);
-  const fin=d.chasse.length===NT;
-  let h=`<a class="back" href="#/orga">◀ Activités</a><h1>Classement</h1><p class="lead">Visible uniquement ici. ${d.results.length} résultats d'équipe saisis${fin?'':' · chasse au trésor provisoire ('+d.chasse.length+'/'+NT+' temps)'}.</p><div class="tw"><table><tr><th>Rang</th><th class="l">Éq.</th><th>Épreuves</th><th>Chasse</th><th>Total</th></tr>`;
+  const fin=d.chasse.length===NT, prov=showCh&&!fin;
+  let h=`<a class="back" href="#/orga">◀ Activités</a><h1>Classement</h1>`;
+  h+='<div class="chips">'+[['','Tout'],...ACTS.map(k=>[k,A[k][0]])].map(x=>
+     `<button class="chip${sel===x[0]?' on':''}" data-rk="${x[0]}">${x[1]}</button>`).join('')+'</div>';
+  if(all)h+=`<div class="seg"><button class="${RK.chasse?'on':''}" data-rkc="1">Avec la chasse</button><button class="${RK.chasse?'':'on'}" data-rkc="0">Sans la chasse</button></div>`;
+  h+=`<p class="lead">${all?(RK.chasse?'Toutes les épreuves, chasse au trésor comprise.':'Toutes les épreuves, hors chasse au trésor.'):'Classement sur '+A[sel][0]+' uniquement.'}`+
+     ` Visible uniquement ici.${prov?' Chasse au trésor provisoire ('+d.chasse.length+'/'+NT+' temps).':''}</p>`;
+  h+='<div class="tw"><table><tr><th>Rang</th><th class="l">Éq.</th>'+
+     (showEp?`<th>${all?'Épreuves':'Points'}</th>`:'')+(showCh?'<th>Chasse</th>':'')+(both?'<th>Total</th>':'')+'</tr>';
   const md=['🥇','🥈','🥉'];
-  rows.forEach(x=>{const rk=rows.findIndex(y=>y.tot===x.tot)+1;h+=`<tr${rk<=3?' class="top"':''}><td class="rk">${rk<=3?md[rk-1]:rk}</td><td class="l"><span class="num sm">${x.t}</span></td><td>${x.ep}</td><td>${x.has?x.cp+(fin?'':'*'):'–'}</td><td><b>${x.tot}</b></td></tr>`});
-  app.innerHTML=h+'</table></div>';
+  rows.forEach(x=>{const rk=rows.findIndex(y=>y.tot===x.tot)+1;
+    h+=`<tr${rk<=3?' class="top"':''}><td class="rk">${rk<=3?md[rk-1]:rk}</td><td class="l"><span class="num sm">${x.t}</span></td>`+
+       (showEp?`<td${both?'':' class="rk"'}>${x.ep}</td>`:'')+
+       (showCh?`<td${both?'':' class="rk"'}>${x.has?x.cp+(fin?'':'*'):'–'}</td>`:'')+
+       (both?`<td><b>${x.tot}</b></td>`:'')+'</tr>';
+  });
+  app.innerHTML=h+'</table></div>'+(prov?'<p class="mut">* points de chasse au trésor encore provisoires : ils changeront tant que les 19 temps ne sont pas saisis.</p>':'');
 }
 app.addEventListener('click',async e=>{
   const b=e.target.closest('button');if(!b||!location.hash.startsWith('#/orga')||!O.data)return;
   const ds=b.dataset;
   if(ds.open!==undefined){const r=+ds.open, k=O.act;O.open[r]=!isOpen(k,r);return orga()}
+  if(ds.rk!==undefined){RK.act=ds.rk;return orga()}
+  if(ds.rkc!==undefined){RK.chasse=ds.rkc==='1';return orga()}
   if(b.id==='out'){ls.del('orga');ls.del('act');try{sessionStorage.removeItem('orga');localStorage.removeItem('orga')}catch(e){}O.data=null;return orgaLogin()}
   if(O.busy)return;
   let call, after;
@@ -411,6 +458,14 @@ app.addEventListener('click',async e=>{
     call=()=>rpc('orga_save',{p_code:code(),p_rotation:r,p_activity:k,p_rows:rows});
     after=()=>{O.open[r]=true};
   }
+  else if(ds.note!==undefined){
+    const k=ds.note, v=$('#nt').value.trim();
+    call=()=>rpc('orga_note',{p_code:code(),p_activity:k,p_note:v});
+  }
+  else if(ds.notedel!==undefined){
+    const k=ds.notedel;
+    call=()=>rpc('orga_note',{p_code:code(),p_activity:k,p_note:''});
+  }
   else if(ds.k){
     const r=+ds.r, m=manche(ds.k,r), o=options(m)[+ds.i], clear=b.classList.contains('on');
     const rows=[...m.a.map(t=>({team:t,points:clear?null:o[1],detail:o[3]})),...m.b.map(t=>({team:t,points:clear?null:o[2],detail:o[4]}))];
@@ -426,8 +481,8 @@ app.addEventListener('click',async e=>{
     call=()=>rpc('orga_chasse',{p_code:code(),p_team:t,p_seconds:sec});
   }else return;
   O.busy=true;b.disabled=true;
-  const msg=ds.sub!==undefined?'Manche retirée':(ds.clr!==undefined||ds.del!==undefined||ds.chdel!==undefined)?'Supprimé':'Enregistré';
-  try{const ok=await call();if(!ok)throw 0;O.data=await rpc('orga_all',{p_code:code()});setRot(O.data.rotation);if(after)after();toast(msg,true)}
+  const msg=ds.sub!==undefined?'Manche retirée':(ds.clr!==undefined||ds.del!==undefined||ds.chdel!==undefined||ds.notedel!==undefined)?'Supprimé':'Enregistré';
+  try{const ok=await call();if(!ok)throw 0;O.data=await rpc('orga_all',{p_code:code()});setRot(O.data.rotation);setNotes(O.data.notes);if(after)after();toast(msg,true)}
   catch(err){toast('Action impossible : pas de réseau ?')}
   O.busy=false;orga();
 });
