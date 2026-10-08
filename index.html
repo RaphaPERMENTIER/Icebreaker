@@ -45,31 +45,52 @@ button:disabled{opacity:.5}
 .row.done{opacity:.6}
 .total{display:flex;justify-content:space-between;align-items:baseline;font-size:18px}
 .total b{font-size:32px}
-.tabs{display:flex;gap:8px;margin:12px 0}
-.tabs button{flex:1;min-height:46px}
-.tabs button.on{background:var(--dark);color:#fff;border-color:var(--dark)}
-.rots{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:10px 0}
-.rots button{min-height:46px;padding:4px}
-.rots button.on{background:var(--dark);color:#fff;border-color:var(--dark)}
-.rots button.live{box-shadow:inset 0 -5px 0 var(--ok)}
-.match h3{margin:0 0 2px;font-size:18px;display:flex;align-items:center;gap:8px}
-.dot{width:14px;height:14px;border-radius:4px;display:inline-block;flex:none}
+.num{display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:36px;padding:0 7px;border-radius:10px;background:#eceadf;border:1px solid var(--line);font-weight:800;font-size:19px;font-variant-numeric:tabular-nums}
+.num.sm{min-width:28px;height:28px;padding:0 5px;border-radius:8px;font-size:15px}
+.num.xl{min-width:78px;height:78px;border-radius:20px;font-size:44px}
+.num.ok{background:#e7f5ec;border-color:#b7e0c5;color:var(--ok)}
+.teamhead{display:flex;align-items:center;gap:14px;margin:6px 0 14px}
+.teamhead .lab{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);font-weight:700}
 .opts{display:grid;gap:8px;margin-top:10px}
-.opts button{justify-content:space-between;text-align:left;font-weight:600}
+.opts button{justify-content:space-between;text-align:left;font-weight:600;min-height:58px}
 .opts button span{font-weight:800;white-space:nowrap;margin-left:10px}
 .opts button.on{background:var(--ok);border-color:var(--ok);color:#fff}
 .stepper{display:flex;align-items:center;gap:10px}
 .stepper button{min-width:56px}
 .stepper div{flex:1;text-align:center;font-weight:800;font-size:18px}
+.acts{display:grid;gap:10px}
+.act{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-left:10px solid var(--c);border-radius:14px;padding:14px;min-height:66px;text-decoration:none;color:var(--ink)}
+.act b{flex:1;font-size:19px}
+.act small{color:var(--mut);font-size:13px;font-weight:700;white-space:nowrap}
+.back{display:inline-block;color:var(--mut);text-decoration:none;font-weight:700;font-size:14px;padding:6px 0}
+.ahead{background:var(--card);border:1px solid var(--line);border-left:10px solid var(--c);border-radius:14px;padding:12px 14px;margin:6px 0 12px}
+.ahead h1{margin:2px 0 0;font-size:24px}
+.prog{font-size:14px;color:var(--mut);margin:14px 0 4px}
+.mch{padding:0;overflow:hidden}
+.mch.live{outline:3px solid var(--dark);outline-offset:-1px}
+.mhead{display:flex;width:100%;align-items:center;gap:12px;justify-content:flex-start;text-align:left;background:none;border:0;border-radius:0;padding:12px 14px;min-height:72px}
+.mhead.static{cursor:default}
+.mno{flex:0 0 42px;height:42px;border-radius:12px;background:#f3f4f6;color:var(--mut);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px}
+.mch.ok .mno{background:#e7f5ec;color:var(--ok)}
+.mi{flex:1;min-width:0}
+.mi small{display:block;margin-top:3px;color:var(--mut);font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mi small b{color:var(--ok)}
+.vs{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.vs em{font-style:normal;color:var(--mut);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.st{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--ok);font-weight:800;font-size:18px}
+.st em{font-style:normal;color:var(--mut);font-size:12px}
+.mch .opts{margin:0;padding:0 14px 14px}
+.chlist{padding:0 14px 10px}
+.ch{display:grid;grid-template-columns:56px 1fr 1fr 64px;gap:8px;align-items:center;padding:8px 0;border-top:1px solid #eee}
+.ch input{text-align:center;padding:8px 4px}
+.ch button{min-height:50px;padding:4px}
+.cht{display:flex;flex-direction:column;align-items:center;gap:2px}
+.cht small{color:var(--mut);font-size:11px;white-space:nowrap}
 table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
 th,td{padding:9px 8px;text-align:center;border-bottom:1px solid #eee;font-size:15px}
 th{background:#f3f4f6;font-size:12px;text-transform:uppercase;color:var(--mut)}
 td.l,th.l{text-align:left}
 input{font:inherit;font-size:18px;border:1px solid var(--line);border-radius:10px;padding:10px;min-height:50px;width:100%}
-.ch{display:grid;grid-template-columns:1fr 64px 64px 60px;gap:6px;align-items:center;padding:8px 0;border-bottom:1px solid #eee}
-.ch input{text-align:center;padding:8px 4px}
-.ch button{min-height:50px;padding:4px}
-.ch small{display:block;color:var(--mut);font-size:12px}
 .plan td{font-size:14px;padding:8px 4px}
 .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 #toast{position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));background:var(--warn);color:#fff;padding:12px 14px;border-radius:12px;font-weight:600;display:none;z-index:9;text-align:center}
@@ -89,7 +110,8 @@ const A={beret:['Béret','#F4B183'],tir:['Tir à la corde','#9DC3E6'],gonflable:
 const NR=10, NT=19, $=s=>document.querySelector(s), app=$('#app');
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const hh=r=>{const m=14*60+15*(r-1);return Math.floor(m/60)+'h'+String(m%60).padStart(2,'0')};
-const eq=a=>a.map(x=>'Éq. '+x).join(' + ');
+const nm=a=>a.join(' + ');
+const chips=(a,c)=>a.map(t=>`<span class="num${c?' '+c:''}">${t}</span>`).join('');
 const ls={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
 let ROT=ls.get('rot')??0, timer=null;
 
@@ -102,8 +124,8 @@ function slot(t,r){ // ce que fait l'équipe t à la rotation r (1..10)
   }
 }
 function who(s){
-  if(s.k==='beret')return'avec Éq. '+s.mates[0]+' · contre '+eq(s.opp).replace(' + ',' et ');
-  if(s.opp.length)return'contre Éq. '+s.opp[0];
+  if(s.k==='beret')return'avec '+s.mates[0]+' · contre '+s.opp.join(' et ');
+  if(s.opp.length)return'contre '+s.opp[0];
   if(s.k==='chasse')return'Contre la montre';
   return'Soufflez un peu';
 }
@@ -113,14 +135,14 @@ async function rpc(fn,args){
   return r.json();
 }
 function toast(m,ok){const t=$('#toast');t.textContent=m;t.className=ok?'ok':'';t.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.display='none',2600)}
-function setRot(n){if(typeof n!=='number')return;ROT=n;ls.set('rot',n);$('#hrot').textContent=n<1?'Début 14h00':n>NR?'Terminé':'Rotation '+n+' / '+NR}
-const rotLabel=n=>n<1?'Pas commencé':n>NR?'Terminé':'Rotation '+n;
+function setRot(n){if(typeof n!=='number')return;ROT=n;ls.set('rot',n);$('#hrot').textContent=n<1?'Début 14h00':n>NR?'Terminé':'Manche '+n+' / '+NR}
+const rotLabel=n=>n<1?'Pas commencé':n>NR?'Terminé':'Manche '+n;
 
 /* ---------- Accueil ---------- */
 function home(){
   const me=ls.get('me');
   let h='<h1>Choisissez votre équipe</h1>';
-  if(me)h+=`<a class="btn dark big wide" href="#/equipe/${me.team}">Mon équipe : Équipe ${me.team}</a>`;
+  if(me)h+=`<a class="btn dark big wide" href="#/equipe/${me.team}">Mon équipe · ${me.team}</a>`;
   h+='<div class="grid">';
   for(let t=1;t<=NT;t++)h+=`<a class="btn big" href="#/equipe/${t}">${t}</a>`;
   h+='</div><a class="btn wide" style="margin-top:18px" href="#/planning">Planning général</a>';
@@ -133,12 +155,12 @@ function home(){
 function team(t){
   const me=ls.get('me'), mine=me&&me.team===t, data=mine?ls.get('view'):null;
   const res={}; if(data)for(const x of data.results)res[x.rotation]=x;
-  let h=`<h1>Équipe ${t}</h1>`;
+  let h=`<div class="teamhead"><span class="num xl">${t}</span><span class="lab">${mine?'Votre équipe':'Équipe'}</span></div>`;
   const r=ROT;
   if(r>=1&&r<=NR){
     const s=slot(t,r), n=r<NR?slot(t,r+1):null;
-    h+=`<div class="card now"><div class="lab">Maintenant · rotation ${r}</div><div class="act">${A[s.k][0]}</div><div class="who">${who(s)}</div>`+
-       (n?`<div class="next">Ensuite : <b>${A[n.k][0]}</b> — ${who(n)}</div>`:'<div class="next">C\'est la dernière rotation !</div>')+'</div>';
+    h+=`<div class="card now"><div class="lab">Maintenant · manche ${r}</div><div class="act">${A[s.k][0]}</div><div class="who">${who(s)}</div>`+
+       (n?`<div class="next">Ensuite : <b>${A[n.k][0]}</b> — ${who(n)}</div>`:'<div class="next">C\'est la dernière manche !</div>')+'</div>';
   }else if(r<1){
     const s=slot(t,1);
     h+=`<div class="card now"><div class="lab">Début à 14h00</div><div class="act">${A[s.k][0]}</div><div class="who">${who(s)}</div></div>`;
@@ -182,7 +204,7 @@ async function scan(tok){
 
 /* ---------- Planning général ---------- */
 function planning(){
-  let h='<h1>Planning général</h1><div class="scroll"><table class="plan"><tr><th>Rot.</th>';
+  let h='<h1>Planning général</h1><div class="scroll"><table class="plan"><tr><th>Manche</th>';
   for(const k of K)h+=`<th style="background:${A[k][1]};color:#111">${A[k][0]}</th>`;
   h+='</tr>';
   G.forEach((g,i)=>{
@@ -191,86 +213,131 @@ function planning(){
     for(let j=1;j<6;j++)h+=`<td style="white-space:nowrap">${g[j].join(' – ')}</td>`;
     h+=`<td>${g[6].join(', ')}</td><td class="mut">${g[7].join(', ')}</td></tr>`;
   });
-  app.innerHTML=h+'</table></div><p class="mut">Faites défiler le tableau vers la droite pour voir toutes les épreuves.</p><a class="btn wide" href="#/">Accueil</a>';
+  app.innerHTML=h+'</table></div><p class="mut">Faites défiler le tableau vers la droite pour voir toutes les épreuves. Les équipes sont indiquées par leur numéro.</p><a class="btn wide" href="#/">Accueil</a>';
 }
 
 /* ---------- Organisateurs ---------- */
-let O={tab:'saisie',rot:1,data:null,busy:false};
+const ACTS=[...K.slice(0,6),'chasse'];
+let O={data:null,busy:false,open:{},act:null,scroll:false};
 const code=()=>{try{return sessionStorage.getItem('orga')||localStorage.getItem('orga')}catch(e){return null}};
 function orgaLogin(msg){
   app.innerHTML=`<h1>Espace organisateurs</h1><div class="card"><p>Entrez le code organisateur.</p><input id="c" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Code" aria-label="Code organisateur"><button class="dark wide" id="go">Entrer</button>${msg?`<p style="color:var(--warn);font-weight:600">${msg}</p>`:''}</div>`;
   const go=async()=>{
     const v=$('#c').value.trim();if(!v)return;$('#go').disabled=true;
-    try{const d=await rpc('orga_all',{p_code:v});if(!d)return orgaLogin('Code incorrect.');try{localStorage.setItem('orga',v)}catch(e){}O.data=d;setRot(d.rotation);O.rot=Math.min(NR,Math.max(1,d.rotation));orga()}
+    try{const d=await rpc('orga_all',{p_code:v});if(!d)return orgaLogin('Code incorrect.');try{localStorage.setItem('orga',v)}catch(e){}O.data=d;setRot(d.rotation);orga()}
     catch(e){orgaLogin('Pas de réseau, réessayez.')}
   };
   $('#go').onclick=go;$('#c').onkeydown=e=>{if(e.key==='Enter')go()};
 }
 async function orgaLoad(){
-  try{const d=await rpc('orga_all',{p_code:code()});if(!d){ls.del('orga');return orgaLogin('Code incorrect.')}O.data=d;setRot(d.rotation);if(location.hash==='#/orga'&&!O.busy)orga()}
+  try{const d=await rpc('orga_all',{p_code:code()});if(!d){ls.del('orga');return orgaLogin('Code incorrect.')}O.data=d;setRot(d.rotation);if(location.hash.startsWith('#/orga')&&!O.busy)orga()}
   catch(e){if(!O.data)orgaLogin('Pas de réseau, réessayez.')}
 }
-function matches(r){ // les 7 rencontres notées d'une rotation
-  const g=G[r-1], m=[{k:'beret',a:g[0][0],b:g[0][1]}];
-  for(let i=1;i<6;i++)m.push({k:K[i],a:[g[i][0]],b:[g[i][1]]});
-  return m;
+function manche(k,r){ // la rencontre d'une activité à la manche r
+  const g=G[r-1], i=K.indexOf(k);
+  if(k==='beret')return{k,r,a:g[0][0],b:g[0][1]};
+  if(i<6)return{k,r,a:[g[i][0]],b:[g[i][1]]};
+  return{k,r,teams:g[i]};
 }
 function options(m){
-  const a=eq(m.a), b=eq(m.b);
+  const a=nm(m.a), b=nm(m.b);
   if(m.k==='sumo')return[[a+' gagne · 2 restants',6,0,'Victoire (2 restants)','Défaite'],[a+' gagne · 1 restant',3,0,'Victoire (1 restant)','Défaite'],['Égalité',2,2,'Égalité','Égalité'],[b+' gagne · 1 restant',0,3,'Défaite','Victoire (1 restant)'],[b+' gagne · 2 restants',0,6,'Défaite','Victoire (2 restants)']];
   const v=m.a.length>1?' gagnent':' gagne';
   return[[a+v,5,0,'Victoire','Défaite'],['Égalité',2,2,'Égalité','Égalité'],[b+v,0,5,'Défaite','Victoire']];
 }
 function pts(r,k,t){const x=O.data.results.find(x=>x.rotation===r&&x.activity===k&&x.team===t);return x?x.points:null}
+function done(k){let n=0;for(let r=1;r<=NR;r++)if(pts(r,k,manche(k,r).a[0])!==null)n++;return n}
+const isOpen=(k,r)=>O.open[r]!==undefined?O.open[r]:pts(r,k,manche(k,r).a[0])===null;
+
 function orga(){
   if(!code())return orgaLogin();
   if(!O.data){app.innerHTML='<p>Chargement…</p>';return orgaLoad()}
+  const v=location.hash.split('/')[2]||'';
+  if(v==='classement')return orgaRank();
+  if(ACTS.includes(v))return orgaAct(v);
+  orgaHome();
+}
+function orgaHome(){
+  const d=O.data, last=ls.get('act');
+  O.act=null;
+  let h='<h1>Organisateurs</h1>';
+  h+=`<div class="card"><div class="mut">Manche affichée aux équipes</div><div class="stepper"><button data-rot="${d.rotation-1}" ${d.rotation<1?'disabled':''} aria-label="Manche précédente">◀</button><div>${rotLabel(d.rotation)}</div><button class="dark" data-rot="${d.rotation+1}" ${d.rotation>NR?'disabled':''} aria-label="Manche suivante">▶</button></div></div>`;
+  h+='<h2>Quelle activité animez-vous ?</h2>';
+  if(last&&ACTS.includes(last))h+=`<a class="btn dark big wide" href="#/orga/${last}">Continuer · ${A[last][0]}</a>`;
+  h+='<div class="acts">';
+  for(const k of ACTS){
+    const tot=k==='chasse'?NT:NR, n=k==='chasse'?d.chasse.length:done(k);
+    h+=`<a class="act" href="#/orga/${k}" style="--c:${A[k][1]}"><b>${A[k][0]}</b><small>${n}/${tot}${n>=tot?' ✓':''}</small></a>`;
+  }
+  h+='</div>';
+  h+='<a class="btn wide" style="margin-top:16px" href="#/orga/classement">Classement</a>';
+  h+='<button class="wide" id="out">Se déconnecter</button>';
+  app.innerHTML=h;
+}
+function orgaAct(k){
   const d=O.data;
-  let h=`<h1>Organisateurs</h1><div class="card"><div class="mut">Rotation affichée aux équipes</div><div class="stepper"><button data-rot="${d.rotation-1}" ${d.rotation<1?'disabled':''} aria-label="Rotation précédente">◀</button><div>${rotLabel(d.rotation)}</div><button class="dark" data-rot="${d.rotation+1}" ${d.rotation>NR?'disabled':''} aria-label="Rotation suivante">▶</button></div></div>`;
-  h+='<div class="tabs">'+[['saisie','Résultats'],['chasse','Chasse'],['classement','Classement']].map(([k,n])=>`<button data-tab="${k}" class="${O.tab===k?'on':''}">${n}</button>`).join('')+'</div>';
-  if(O.tab==='saisie'){
-    h+='<div class="rots">';
-    for(let r=1;r<=NR;r++){const n=matches(r).filter(m=>pts(r,m.k,m.a[0])!==null).length;h+=`<button data-r="${r}" class="${r===O.rot?'on':''}${r===d.rotation?' live':''}">${r}<span class="mut" style="font-size:11px;margin-left:4px;color:inherit;opacity:.7">${n}/6</span></button>`}
-    h+='</div>';
-    for(const m of matches(O.rot)){
-      const pa=pts(O.rot,m.k,m.a[0]), pb=pts(O.rot,m.k,m.b[0]);
-      h+=`<div class="card match"><h3><span class="dot" style="background:${A[m.k][1]}"></span>${A[m.k][0]}</h3><div class="mut">${eq(m.a)} contre ${eq(m.b)}${pa===null?'':' · enregistré'}</div><div class="opts">`;
-      options(m).forEach((o,i)=>{h+=`<button data-k="${m.k}" data-i="${i}" class="${pa===o[1]&&pb===o[2]?'on':''}">${o[0]}<span>${o[1]} – ${o[2]}</span></button>`});
-      h+='</div></div>';
+  if(O.act!==k){O.act=k;O.open={};O.scroll=true;ls.set('act',k)}
+  let h=`<a class="back" href="#/orga">◀ Activités</a><div class="ahead" style="--c:${A[k][1]}"><div class="mut">Vous animez</div><h1>${A[k][0]}</h1></div>`;
+  if(k==='chasse')h+=chasse();
+  else{
+    h+=`<div class="prog"><b>${done(k)}/${NR}</b> manches enregistrées · touchez une manche pour l'ouvrir ou la replier</div>`;
+    for(let r=1;r<=NR;r++){
+      const m=manche(k,r), o=options(m), pa=pts(r,k,m.a[0]), pb=pts(r,k,m.b[0]);
+      const saved=pa!==null, sel=saved?o.findIndex(x=>x[1]===pa&&x[2]===pb):-1, open=isOpen(k,r), live=r===d.rotation;
+      let sub=hh(r);
+      if(live)sub+=' · <b>en cours</b>';
+      if(saved)sub+=' · '+(sel>-1?o[sel][0]+' ('+o[sel][1]+'–'+o[sel][2]+')':pa+'–'+pb);
+      h+=`<div class="card mch${live?' live':''}${saved?' ok':''}">`+
+         `<button class="mhead" data-open="${r}" aria-expanded="${open}"><span class="mno">${r}</span><span class="mi"><span class="vs">${chips(m.a)}<em>contre</em>${chips(m.b)}</span><small>${sub}</small></span><span class="st">${saved?'✓':''}<em>${open?'▲':'▼'}</em></span></button>`;
+      if(open){
+        h+='<div class="opts">';
+        o.forEach((x,i)=>{h+=`<button data-k="${k}" data-r="${r}" data-i="${i}" class="${pa===x[1]&&pb===x[2]?'on':''}">${x[0]}<span>${x[1]} – ${x[2]}</span></button>`});
+        h+='</div>';
+      }
+      h+='</div>';
     }
-    h+='<p class="mut">Touchez un résultat pour l\'enregistrer. Touchez-le à nouveau pour l\'effacer.</p>';
-  }else if(O.tab==='chasse'){
-    const n=d.chasse.length;
-    h+=`<div class="card"><p class="mut">Temps de chaque équipe. Le plus rapide marque 19 points, puis 18, 17… ${n}/19 temps saisis${n<NT?' : les points sont provisoires et restent masqués aux équipes tant qu\'il en manque.':'.'}</p>`;
-    for(let t=1;t<=NT;t++){
-      const c=d.chasse.find(x=>x.team===t), rr=G.findIndex(g=>g[6].includes(t))+1;
-      h+=`<div class="ch"><div><b>Équipe ${t}</b><small>rotation ${rr}${c?' · '+c.points+' pts':''}</small></div><input inputmode="numeric" id="m${t}" placeholder="min" aria-label="Minutes équipe ${t}" value="${c?Math.floor(c.seconds/60):''}"><input inputmode="numeric" id="s${t}" placeholder="sec" aria-label="Secondes équipe ${t}" value="${c?c.seconds%60:''}"><button data-ch="${t}" class="${c?'':'dark'}">OK</button></div>`;
-    }
-    h+='</div><p class="mut">Pour effacer un temps, videz les deux cases puis touchez OK.</p>';
-  }else{
-    const rows=[];
-    for(let t=1;t<=NT;t++){const e=d.results.filter(x=>x.team===t), c=d.chasse.find(x=>x.team===t);const ep=e.reduce((s,x)=>s+x.points,0), cp=c?c.points:0;rows.push({t,ep,cp,has:!!c,tot:ep+cp,n:e.length})}
-    rows.sort((a,b)=>b.tot-a.tot||a.t-b.t);
-    const fin=d.chasse.length===NT, saved=d.results.length;
-    h+=`<p class="mut">Visible uniquement ici. ${saved} résultats d'équipe saisis${fin?'':' · chasse au trésor provisoire ('+d.chasse.length+'/19 temps)'}.</p><table><tr><th>Rang</th><th class="l">Équipe</th><th>Épreuves</th><th>Chasse</th><th>Total</th></tr>`;
-    rows.forEach((x,i)=>{const rk=rows.findIndex(y=>y.tot===x.tot)+1;h+=`<tr><td><b>${rk}</b></td><td class="l">Équipe ${x.t}</td><td>${x.ep}</td><td>${x.has?x.cp+(fin?'':'*'):'–'}</td><td><b>${x.tot}</b></td></tr>`});
-    h+='</table><button class="wide" id="out" style="margin-top:20px">Se déconnecter</button>';
+    h+='<p class="mut">Touchez le résultat pour l\'enregistrer, touchez-le à nouveau pour l\'effacer.</p>';
   }
   app.innerHTML=h;
+  if(O.scroll){O.scroll=false;const el=document.querySelector('.mch.live');if(el)setTimeout(()=>el.scrollIntoView({block:'center',behavior:'smooth'}),80)}
+}
+function chasse(){
+  const d=O.data, n=d.chasse.length;
+  let h=`<div class="prog"><b>${n}/${NT}</b> temps saisis${n<NT?' · le plus rapide marque 19 points, puis 18, 17… Les points restent provisoires et masqués aux équipes tant qu\'il en manque.':' · points définitifs'}</div>`;
+  for(let r=1;r<=NR;r++){
+    const m=manche('chasse',r), live=r===d.rotation;
+    h+=`<div class="card mch${live?' live':''}"><div class="mhead static"><span class="mno">${r}</span><span class="mi"><span class="vs">${chips(m.teams)}</span><small>${hh(r)}${live?' · <b>en cours</b>':''}</small></span></div><div class="chlist">`;
+    for(const t of m.teams){
+      const c=d.chasse.find(x=>x.team===t);
+      h+=`<div class="ch"><div class="cht"><span class="num${c?' ok':''}">${t}</span>${c?`<small>${c.points} pts</small>`:''}</div><input inputmode="numeric" id="m${t}" placeholder="min" aria-label="Minutes équipe ${t}" value="${c?Math.floor(c.seconds/60):''}"><input inputmode="numeric" id="s${t}" placeholder="sec" aria-label="Secondes équipe ${t}" value="${c?c.seconds%60:''}"><button data-ch="${t}" class="${c?'':'dark'}">OK</button></div>`;
+    }
+    h+='</div></div>';
+  }
+  return h+'<p class="mut">Pour effacer un temps, videz les deux cases puis touchez OK.</p>';
+}
+function orgaRank(){
+  const d=O.data, rows=[];
+  O.act=null;
+  for(let t=1;t<=NT;t++){const e=d.results.filter(x=>x.team===t), c=d.chasse.find(x=>x.team===t);const ep=e.reduce((s,x)=>s+x.points,0), cp=c?c.points:0;rows.push({t,ep,cp,has:!!c,tot:ep+cp})}
+  rows.sort((a,b)=>b.tot-a.tot||a.t-b.t);
+  const fin=d.chasse.length===NT;
+  let h=`<a class="back" href="#/orga">◀ Activités</a><h1>Classement</h1><p class="mut">Visible uniquement ici. ${d.results.length} résultats d'équipe saisis${fin?'':' · chasse au trésor provisoire ('+d.chasse.length+'/'+NT+' temps)'}.</p><table><tr><th>Rang</th><th class="l">Éq.</th><th>Épreuves</th><th>Chasse</th><th>Total</th></tr>`;
+  rows.forEach(x=>{const rk=rows.findIndex(y=>y.tot===x.tot)+1;h+=`<tr><td><b>${rk}</b></td><td class="l"><span class="num sm">${x.t}</span></td><td>${x.ep}</td><td>${x.has?x.cp+(fin?'':'*'):'–'}</td><td><b>${x.tot}</b></td></tr>`});
+  app.innerHTML=h+'</table>';
 }
 app.addEventListener('click',async e=>{
   const b=e.target.closest('button');if(!b||!location.hash.startsWith('#/orga')||!O.data)return;
   const ds=b.dataset;
-  if(ds.tab){O.tab=ds.tab;return orga()}
-  if(ds.r){O.rot=+ds.r;return orga()}
-  if(b.id==='out'){ls.del('orga');try{sessionStorage.removeItem('orga');localStorage.removeItem('orga')}catch(e){}O.data=null;return orgaLogin()}
+  if(ds.open!==undefined){const r=+ds.open, k=O.act;O.open[r]=!isOpen(k,r);return orga()}
+  if(b.id==='out'){ls.del('orga');ls.del('act');try{sessionStorage.removeItem('orga');localStorage.removeItem('orga')}catch(e){}O.data=null;return orgaLogin()}
   if(O.busy)return;
-  let call;
-  if(ds.rot!==undefined){const n=+ds.rot;call=()=>rpc('orga_rotation',{p_code:code(),p_n:n});if(n>=1&&n<=NR)O.rot=n}
+  let call, after;
+  if(ds.rot!==undefined){const n=+ds.rot;call=()=>rpc('orga_rotation',{p_code:code(),p_n:n})}
   else if(ds.k){
-    const m=matches(O.rot).find(x=>x.k===ds.k), o=options(m)[+ds.i], clear=b.classList.contains('on');
+    const r=+ds.r, m=manche(ds.k,r), o=options(m)[+ds.i], clear=b.classList.contains('on');
     const rows=[...m.a.map(t=>({team:t,points:clear?null:o[1],detail:o[3]})),...m.b.map(t=>({team:t,points:clear?null:o[2],detail:o[4]}))];
-    call=()=>rpc('orga_save',{p_code:code(),p_rotation:O.rot,p_activity:m.k,p_rows:rows});
+    call=()=>rpc('orga_save',{p_code:code(),p_rotation:r,p_activity:ds.k,p_rows:rows});
+    after=()=>{O.open[r]=clear};
   }else if(ds.ch){
     const t=+ds.ch, mv=$('#m'+t).value.trim(), sv=$('#s'+t).value.trim();
     let sec=null;
@@ -278,7 +345,7 @@ app.addEventListener('click',async e=>{
     call=()=>rpc('orga_chasse',{p_code:code(),p_team:t,p_seconds:sec});
   }else return;
   O.busy=true;b.disabled=true;
-  try{const ok=await call();if(!ok)throw 0;O.data=await rpc('orga_all',{p_code:code()});setRot(O.data.rotation);toast('Enregistré',true)}
+  try{const ok=await call();if(!ok)throw 0;O.data=await rpc('orga_all',{p_code:code()});setRot(O.data.rotation);if(after)after();toast('Enregistré',true)}
   catch(err){toast('Non enregistré : pas de réseau ?')}
   O.busy=false;orga();
 });
