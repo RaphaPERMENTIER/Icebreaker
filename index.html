@@ -51,9 +51,6 @@ button:disabled{opacity:.5}
 .opts button{justify-content:space-between;text-align:left;font-weight:600;min-height:58px}
 .opts button span{font-weight:800;white-space:nowrap;margin-left:10px}
 .opts button.on{background:var(--ok);border-color:var(--ok);color:#fff}
-.opts button.tie{justify-self:center;width:auto;min-height:36px;padding:4px 14px;font-size:13px;font-weight:600;color:var(--mut);border-style:dashed}
-.opts button.tie span{margin-left:8px;font-size:12px;font-weight:700}
-.opts button.tie.on{color:#fff;border-style:solid}
 .stepper{display:flex;align-items:center;gap:10px}
 .stepper button{min-width:56px}
 .stepper div{flex:1;text-align:center;font-weight:800;font-size:18px}
@@ -217,7 +214,7 @@ function manche(k,r){ // la rencontre d'une activité à la manche r
 }
 function options(m){ // épreuves notées en une rencontre : béret, parcours, blindtest
   const a=nm(m.a), b=nm(m.b), v=m.a.length>1?' gagnent':' gagne';
-  return[[a+v,5,0,'Victoire','Défaite'],['Égalité',2,2,'Égalité','Égalité'],[b+v,0,5,'Défaite','Victoire']];
+  return[[a+v,5,0,'Victoire','Défaite'],[b+v,0,5,'Défaite','Victoire']];
 }
 function pts(r,k,t){const x=O.data.results.find(x=>x.rotation===r&&x.activity===k&&x.team===t);return x?x.points:null}
 const bo3=k=>BO3.includes(k);
@@ -280,7 +277,7 @@ function orgaAct(k){
         if(pa!==null)sub+=' · '+(sel>-1?o[sel][0]+` (${o[sel][1]}–${o[sel][2]})`:pa+'–'+pb);
         if(open){
           body='<div class="opts">';
-          o.forEach((x,i)=>{body+=`<button data-k="${k}" data-r="${r}" data-i="${i}" class="${pa===x[1]&&pb===x[2]?'on':''}${x[1]===x[2]?' tie':''}">${x[0]}<span>${x[1]} – ${x[2]}</span></button>`});
+          o.forEach((x,i)=>{body+=`<button data-k="${k}" data-r="${r}" data-i="${i}" class="${pa===x[1]&&pb===x[2]?'on':''}">${x[0]}<span>${x[1]} – ${x[2]}</span></button>`});
           body+='</div>';
         }
       }
