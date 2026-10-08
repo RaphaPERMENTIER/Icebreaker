@@ -4,108 +4,172 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#1f2937">
+<meta name="theme-color" content="#1b2430">
 <title>Olympiades</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🏅%3C/text%3E%3C/svg%3E">
 <style>
-:root{--ink:#111827;--mut:#5b6472;--bg:#f4f1ea;--card:#fff;--line:#d9d4c8;--dark:#1f2937;--ok:#1b7f3b;--warn:#b42318}
+:root{
+  --ink:#14171c;--mut:#687183;--soft:#8b93a3;--bg:#f5f3ed;--card:#fff;
+  --line:#e3ded1;--line2:#f0ece2;--fill:#f7f5ef;
+  --dark:#1b2430;--dark2:#2b3747;--ok:#15803d;--okbg:#ecf7f0;--okline:#c3e3cf;--warn:#b42318;
+  --r:16px;--r2:12px;--r3:10px;
+  --sh:0 1px 2px rgba(20,23,28,.05);--sh2:0 6px 20px rgba(20,23,28,.12);
+}
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-header{background:var(--dark);color:#fff;padding:calc(10px + env(safe-area-inset-top)) 16px 10px;position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:12px}
-header a{color:#fff;text-decoration:none;font-weight:800;font-size:18px;letter-spacing:.04em}
-header .rot{margin-left:auto;font-size:14px;background:#374151;border-radius:999px;padding:5px 12px;font-weight:600;white-space:nowrap}
-main{max-width:680px;margin:0 auto;padding:16px 16px calc(40px + env(safe-area-inset-bottom))}
-h1{font-size:26px;margin:4px 0 12px;line-height:1.15}
-h2{font-size:15px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);margin:24px 0 8px}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+::selection{background:#ffd966}
+:focus-visible{outline:3px solid #2563eb;outline-offset:2px}
+
+/* ---------- En-tête ---------- */
+header{position:sticky;top:0;z-index:5;background:var(--dark);color:#fff;padding:calc(11px + env(safe-area-inset-top)) 16px 11px;display:flex;align-items:center;gap:12px}
+header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,#F4B183,#FFD966,#A9D18E,#8FD3C8,#9DC3E6,#C5A3D9,#F4A6B7)}
+header a{color:#fff;text-decoration:none;font-weight:800;font-size:17px;letter-spacing:.07em;display:flex;align-items:center;gap:8px}
+header .rot{margin-left:auto;font-size:13px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:5px 12px;font-weight:600;white-space:nowrap;letter-spacing:.01em}
+
+/* ---------- Structure ---------- */
+main{max-width:700px;margin:0 auto;padding:18px 16px calc(48px + env(safe-area-inset-bottom))}
+h1{font-size:27px;line-height:1.15;letter-spacing:-.02em;margin:2px 0 14px}
+h2{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--soft);font-weight:800;margin:28px 0 10px}
 p{margin:8px 0}
 .mut{color:var(--mut);font-size:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.btn,button{font:inherit;font-weight:700;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:12px;min-height:52px;padding:10px 12px;cursor:pointer;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;touch-action:manipulation}
-.btn.big{font-size:20px;min-height:64px}
+.lead{color:var(--mut);font-size:15px;margin:-6px 0 18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:12px 0;box-shadow:var(--sh)}
+.card.mut{color:var(--mut);font-size:14px;line-height:1.5}
+
+/* ---------- Boutons ---------- */
+.btn,button{font:inherit;font-weight:700;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:var(--r2);min-height:52px;padding:11px 14px;cursor:pointer;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;touch-action:manipulation;box-shadow:var(--sh);transition:transform .08s ease,background .15s ease,border-color .15s ease}
+.btn:active,button:active{transform:scale(.985)}
 .btn.dark,button.dark{background:var(--dark);color:#fff;border-color:var(--dark)}
-.btn.wide{width:100%;margin:8px 0}
-button:disabled{opacity:.5}
-.now{background:var(--dark);color:#fff;border:0}
-.now .lab{font-size:13px;text-transform:uppercase;letter-spacing:.08em;opacity:.75}
-.now .act{font-size:28px;font-weight:800;line-height:1.15;margin:4px 0}
-.now .who{font-size:18px}
-.now .next{margin-top:12px;padding-top:10px;border-top:1px solid #4b5563;font-size:15px;opacity:.9}
-.row{display:flex;align-items:stretch;background:var(--card);border:1px solid var(--line);border-radius:12px;margin:8px 0;overflow:hidden}
-.row .t{flex:0 0 64px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f3f4f6;padding:6px 4px;font-size:12px;color:var(--mut)}
-.row .t b{font-size:20px;color:var(--ink);line-height:1}
-.row .bar{flex:0 0 8px}
-.row .d{flex:1;padding:10px 12px;min-width:0}
-.row .d b{font-size:17px}
-.row .d div{font-size:14px;color:var(--mut)}
-.row.cur{outline:3px solid var(--dark);outline-offset:-1px}
-.row.done{opacity:.6}
-.num{display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:36px;padding:0 7px;border-radius:10px;background:#eceadf;border:1px solid var(--line);font-weight:800;font-size:19px;font-variant-numeric:tabular-nums}
-.num.sm{min-width:28px;height:28px;padding:0 5px;border-radius:8px;font-size:15px}
-.num.xl{min-width:78px;height:78px;border-radius:20px;font-size:44px}
-.num.ok{background:#e7f5ec;border-color:#b7e0c5;color:var(--ok)}
-.teamhead{display:flex;align-items:center;gap:14px;margin:6px 0 14px}
-.teamhead .lab{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);font-weight:700}
-.opts{display:grid;gap:8px;margin-top:10px}
-.opts button{justify-content:space-between;text-align:left;font-weight:600;min-height:58px}
-.opts button span{font-weight:800;white-space:nowrap;margin-left:10px}
-.opts button.on{background:var(--ok);border-color:var(--ok);color:#fff}
-.stepper{display:flex;align-items:center;gap:10px}
-.stepper button{min-width:56px}
-.stepper div{flex:1;text-align:center;font-weight:800;font-size:18px}
+.btn.big{font-size:19px;min-height:60px}
+.btn.wide{width:100%;margin:10px 0}
+button.wide{width:100%;margin:10px 0}
+.btn.ghost,button.ghost{background:transparent;box-shadow:none;color:var(--mut);font-weight:600}
+button:disabled{opacity:.45;cursor:not-allowed}
+button:disabled:active{transform:none}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--mut);text-decoration:none;font-weight:700;font-size:14px;padding:4px 0 10px}
+a.link{color:var(--ink);font-weight:700;text-underline-offset:3px}
+
+/* ---------- Accueil : grille des équipes ---------- */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(66px,1fr));gap:10px}
+.tgrid .btn{aspect-ratio:1;min-height:0;font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}
+
+/* ---------- Pastilles numéros ---------- */
+.num{display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:36px;padding:0 8px;border-radius:var(--r3);background:var(--fill);border:1px solid var(--line);font-weight:800;font-size:18px;font-variant-numeric:tabular-nums}
+.num.sm{min-width:27px;height:27px;padding:0 6px;border-radius:8px;font-size:14px}
+.num.xl{min-width:76px;height:76px;border-radius:22px;font-size:42px;background:#fff;box-shadow:var(--sh)}
+.num.ok{background:var(--okbg);border-color:var(--okline);color:var(--ok)}
+
+/* ---------- Page équipe ---------- */
+.teamhead{display:flex;align-items:center;gap:16px;margin:4px 0 16px}
+.teamhead .lab{font-size:13px;text-transform:uppercase;letter-spacing:.09em;color:var(--soft);font-weight:800}
+.now{background:linear-gradient(162deg,var(--dark2),var(--dark));color:#fff;border:0;box-shadow:var(--sh2);padding:18px}
+.now .lab{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.6);font-weight:800}
+.now .nm{font-size:29px;font-weight:800;line-height:1.1;letter-spacing:-.02em;margin:7px 0 2px}
+.now .who{font-size:17px;color:rgba(255,255,255,.88)}
+.now .next{margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.16);font-size:14px;color:rgba(255,255,255,.78)}
+.now .next b{color:#fff}
+
+/* ---------- Parcours de l'équipe ---------- */
+.row{display:flex;align-items:stretch;background:var(--card);border:1px solid var(--line);border-radius:var(--r2);margin:8px 0;overflow:hidden;box-shadow:var(--sh)}
+.row .t{flex:0 0 62px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;background:var(--fill);border-right:1px solid var(--line2);padding:8px 4px;font-size:11px;color:var(--soft);font-weight:600}
+.row .t b{font-size:19px;color:var(--ink);line-height:1;font-variant-numeric:tabular-nums}
+.row .bar{flex:0 0 6px}
+.row .d{flex:1;padding:11px 14px;min-width:0}
+.row .d b{font-size:16px;letter-spacing:-.01em}
+.row .d div{font-size:13px;color:var(--mut);margin-top:1px}
+.row.cur{border-color:var(--dark);box-shadow:inset 0 0 0 1px var(--dark),var(--sh)}
+.row.cur .t{background:var(--dark);border-right-color:var(--dark)}
+.row.cur .t b,.row.cur .t{color:#fff}
+.row.done{opacity:.55}
+.tag{display:inline-block;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;background:var(--dark);color:#fff;border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:1px}
+
+/* ---------- Organisateurs : liste des activités ---------- */
+.stepper{display:flex;align-items:center;gap:10px;margin-top:10px}
+.stepper button{min-width:58px;flex:0 0 auto}
+.stepper div{flex:1;text-align:center;font-weight:800;font-size:17px}
 .acts{display:grid;gap:10px}
-.act{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-left:10px solid var(--c);border-radius:14px;padding:14px;min-height:66px;text-decoration:none;color:var(--ink)}
-.act b{flex:1;font-size:19px}
-.act small{color:var(--mut);font-size:13px;font-weight:700;white-space:nowrap}
-.back{display:inline-block;color:var(--mut);text-decoration:none;font-weight:700;font-size:14px;padding:6px 0}
-.ahead{background:var(--card);border:1px solid var(--line);border-left:10px solid var(--c);border-radius:14px;padding:12px 14px;margin:6px 0 12px}
-.ahead h1{margin:2px 0 0;font-size:24px}
-.prog{font-size:14px;color:var(--mut);margin:14px 0 4px}
+.act{display:flex;align-items:center;gap:13px;background:var(--card);border:1px solid var(--line);border-left:7px solid var(--c);border-radius:var(--r);padding:14px;min-height:68px;text-decoration:none;color:var(--ink);box-shadow:var(--sh);transition:transform .08s ease}
+.act:active{transform:scale(.99)}
+.act .ai{flex:1;min-width:0}
+.act .ai b{display:block;font-size:18px;letter-spacing:-.01em}
+.act .pb{display:block;height:5px;border-radius:999px;background:var(--line2);margin-top:8px;overflow:hidden}
+.act .pb i{display:block;height:100%;border-radius:999px;background:var(--c)}
+.act small{color:var(--mut);font-size:13px;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+.act .chev{color:var(--soft);font-size:20px;line-height:1}
+.ahead{background:var(--card);border:1px solid var(--line);border-left:7px solid var(--c);border-radius:var(--r);padding:13px 16px;margin:2px 0 14px;box-shadow:var(--sh)}
+.ahead .mut{font-size:12px;text-transform:uppercase;letter-spacing:.09em;color:var(--soft);font-weight:800}
+.ahead h1{margin:3px 0 0;font-size:23px}
+.prog{font-size:14px;color:var(--mut);margin:16px 0 6px;line-height:1.5}
+.prog b{color:var(--ink)}
+
+/* ---------- Organisateurs : rencontres ---------- */
 .mch{padding:0;overflow:hidden}
-.mch.live{outline:3px solid var(--dark);outline-offset:-1px}
-.mhead{display:flex;width:100%;align-items:center;gap:12px;justify-content:flex-start;text-align:left;background:none;border:0;border-radius:0;padding:12px 14px;min-height:72px}
+.mch.live{border-color:var(--dark);box-shadow:inset 0 0 0 1px var(--dark),var(--sh)}
+.mhead{display:flex;width:100%;align-items:center;gap:12px;justify-content:flex-start;text-align:left;background:none;border:0;border-radius:0;padding:13px 14px;min-height:72px;box-shadow:none}
+.mhead:active{transform:none}
 .mhead.static{cursor:default}
-.mno{flex:0 0 42px;height:42px;border-radius:12px;background:#f3f4f6;color:var(--mut);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px}
-.mch.ok .mno{background:#e7f5ec;color:var(--ok)}
+.mno{flex:0 0 40px;height:40px;border-radius:var(--r3);background:var(--fill);border:1px solid var(--line);color:var(--mut);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;font-variant-numeric:tabular-nums}
+.mch.ok .mno{background:var(--okbg);border-color:var(--okline);color:var(--ok)}
 .mi{flex:1;min-width:0}
-.mi small{display:block;margin-top:3px;color:var(--mut);font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mi small b{color:var(--ok)}
+.mi small{display:block;margin-top:5px;color:var(--mut);font-size:12.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mi small b{color:var(--dark);font-weight:800}
 .vs{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.vs em{font-style:normal;color:var(--mut);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
-.st{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--ok);font-weight:800;font-size:18px}
-.st em{font-style:normal;color:var(--mut);font-size:12px}
-.mch .opts{margin:0;padding:0 14px 14px}
-.bo3{padding:0 14px 14px}
-.sc{display:flex;align-items:center;justify-content:center;gap:14px;margin:2px 0 12px}
-.sc b{font-size:34px;font-variant-numeric:tabular-nums}
-.ask{text-align:center;font-weight:700;color:var(--mut);font-size:14px;margin-bottom:8px}
+.vs em{font-style:normal;color:var(--soft);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.st{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--ok);font-weight:800;font-size:16px}
+.st em{font-style:normal;color:var(--soft);font-size:11px}
+.pane{padding:0 14px 14px;border-top:1px solid var(--line2)}
+.opts{display:grid;gap:8px;padding-top:12px}
+.opts button{justify-content:space-between;text-align:left;font-weight:600;min-height:58px}
+.opts button span{font-weight:800;white-space:nowrap;margin-left:10px;font-variant-numeric:tabular-nums}
+.opts button.on{background:var(--ok);border-color:var(--ok);color:#fff;box-shadow:none}
+.sc{display:flex;align-items:center;justify-content:center;gap:16px;padding:14px 0 12px}
+.sc b{font-size:33px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.ask{text-align:center;font-weight:700;color:var(--mut);font-size:13.5px;margin:2px 0 9px}
 .adds{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.adds button{min-height:80px;border:2px solid var(--dark)}
-.adds .num{min-width:54px;height:54px;border-radius:14px;font-size:28px}
-.fin{text-align:center;font-weight:700;color:var(--ok);margin-bottom:10px}
-.opt{font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em;background:#f3f4f6;border-radius:999px;padding:2px 8px;margin-left:4px}
-.clr{width:100%;margin-top:10px;min-height:46px;font-size:14px;color:var(--mut)}
-.chlist{padding:0 14px 10px}
-.ch{display:grid;grid-template-columns:56px 1fr 1fr 64px;gap:8px;align-items:center;padding:8px 0;border-top:1px solid #eee}
-.ch input{text-align:center;padding:8px 4px}
-.ch button{min-height:50px;padding:4px}
+.adds button{min-height:76px;border:2px solid var(--dark)}
+.adds .num{min-width:52px;height:52px;border-radius:14px;font-size:26px}
+.fin{text-align:center;font-weight:700;color:var(--ok);background:var(--okbg);border:1px solid var(--okline);border-radius:var(--r3);padding:9px 10px;margin-bottom:12px;font-size:14px}
+.opt{font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.05em;background:var(--fill);border:1px solid var(--line);border-radius:999px;padding:2px 8px;margin-left:4px;color:var(--mut)}
+.fixl{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--soft);font-weight:800;margin:16px 0 7px}
+.fix{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.fix button{min-height:48px;font-size:14px;font-weight:600;color:var(--mut)}
+.clr{width:100%;margin-top:9px;min-height:48px;font-size:14px;font-weight:600;color:var(--warn);border-color:#eccbc7;background:#fdf6f5;box-shadow:none}
+
+/* ---------- Chasse au trésor ---------- */
+.chlist{padding:2px 14px 10px;border-top:1px solid var(--line2)}
+.ch{display:grid;grid-template-columns:44px 1fr 1fr 52px 44px;gap:7px;align-items:center;padding:9px 0;border-top:1px solid var(--line2)}
+.ch:first-child{border-top:0}
+.ch input{text-align:center;padding:9px 2px;font-size:16px;min-height:48px}
+.ch button{min-height:48px;padding:4px;font-size:14px}
+.ch .del{color:var(--warn);border-color:#eccbc7;background:#fdf6f5;box-shadow:none;font-size:16px}
 .cht{display:flex;flex-direction:column;align-items:center;gap:2px}
-.cht small{color:var(--mut);font-size:11px;white-space:nowrap}
-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
-th,td{padding:9px 8px;text-align:center;border-bottom:1px solid #eee;font-size:15px}
-th{background:#f3f4f6;font-size:12px;text-transform:uppercase;color:var(--mut)}
+.cht .num{min-width:32px;height:32px;font-size:16px;padding:0 5px}
+.cht small{color:var(--ok);font-size:10px;font-weight:700;white-space:nowrap}
+
+/* ---------- Classement ---------- */
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r2);box-shadow:var(--sh)}
+table{width:100%;border-collapse:collapse;background:#fff}
+th,td{padding:10px 8px;text-align:center;border-bottom:1px solid var(--line2);font-size:15px;font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+th{background:var(--fill);font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--soft);font-weight:800}
 td.l,th.l{text-align:left}
-input{font:inherit;font-size:18px;border:1px solid var(--line);border-radius:10px;padding:10px;min-height:50px;width:100%}
-#toast{position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));background:var(--warn);color:#fff;padding:12px 14px;border-radius:12px;font-weight:600;display:none;z-index:9;text-align:center}
+.rk{font-weight:800;font-size:16px}
+tr.top td{background:#fffdf4}
+input{font:inherit;font-size:17px;border:1px solid var(--line);border-radius:var(--r3);padding:11px;min-height:50px;width:100%;background:#fff;color:var(--ink)}
+input::placeholder{color:#aab1bd}
+
+/* ---------- Toast ---------- */
+#toast{position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));max-width:420px;margin:0 auto;background:var(--warn);color:#fff;padding:13px 16px;border-radius:var(--r2);font-weight:700;font-size:15px;display:none;z-index:9;text-align:center;box-shadow:var(--sh2);animation:up .22s ease}
 #toast.ok{background:var(--ok)}
-a.link{color:var(--ink);font-weight:600}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
-<header><a href="#/">🏅 OLYMPIADES</a><span class="rot" id="hrot"></span></header>
+<header><a href="#/"><span>🏅</span><span>OLYMPIADES</span></a><span class="rot" id="hrot"></span></header>
 <main id="app"></main>
-<div id="toast" role="status"></div>
+<div id="toast" role="status" aria-live="polite"></div>
 <script>
 const SB='https://erlxchgzqfqbgjvxkzad.supabase.co', KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVybHhjaGd6cWZxYmdqdnhremFkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE0NTk5ODQsImV4cCI6MjEwNzAzNTk4NH0.aoJlQXccHcQBZ6K9MuNO4-4fV9M6IOWqa-ppBMZeBUM';
 const G=[[[[9,10],[14,16]],[13,18],[5,17],[11,15],[12,19],[4,8],[6],[1,2,3,7]],[[[8,11],[12,18]],[14,17],[6,15],[16,19],[2,10],[1,5],[3,7,13],[4,9]],[[[4,5],[14,15]],[7,10],[2,11],[8,9],[1,12],[16,18],[17],[3,6,13,19]],[[[3,12],[13,17]],[5,8],[1,16],[10,18],[4,6],[7,11],[9,19],[2,14,15]],[[[2,6],[7,9]],[15,16],[4,12],[1,14],[3,11],[17,19],[5,8],[10,13,18]],[[[4,11],[16,17]],[5,9],[10,19],[3,6],[14,18],[2,13],[1,15],[7,8,12]],[[[2,8],[14,19]],[1,11],[3,9],[4,13],[7,15],[6,10],[12],[5,16,17,18]],[[[1,10],[13,15]],[3,19],[7,8],[6,17],[5,16],[12,14],[2,4,18],[9,11]],[[[5,6],[18,19]],[2,4],[13,14],[7,12],[9,17],[3,8],[11],[1,10,15,16]],[[[1,3],[4,7]],[6,12],[17,18],[2,5],[8,13],[9,15],[10,14,16],[11,19]]];
@@ -144,12 +208,12 @@ const rotLabel=n=>n<1?'Pas commencé':n>NR?'Terminé':'Rotation '+n;
 /* ---------- Accueil ---------- */
 function home(){
   const me=ls.get('me');
-  let h='<h1>Choisissez votre équipe</h1>';
+  let h='<h1>Choisissez votre équipe</h1><p class="lead">Touchez votre numéro pour voir votre programme.</p>';
   if(me)h+=`<a class="btn dark big wide" href="#/equipe/${me.team}">Mon équipe · ${me.team}</a>`;
-  h+='<div class="grid">';
-  for(let t=1;t<=NT;t++)h+=`<a class="btn big" href="#/equipe/${t}">${t}</a>`;
+  h+='<div class="tgrid">';
+  for(let t=1;t<=NT;t++)h+=`<a class="btn" href="#/equipe/${t}">${t}</a>`;
   h+='</div>';
-  h+='<p class="mut" style="text-align:center;margin-top:28px"><a class="link" href="#/orga">Espace organisateurs</a></p>';
+  h+='<p class="mut" style="text-align:center;margin-top:30px"><a class="link" href="#/orga">Espace organisateurs</a></p>';
   app.innerHTML=h;
   rpc('public_state').then(s=>setRot(s.rotation)).catch(()=>{});
 }
@@ -157,21 +221,21 @@ function home(){
 /* ---------- Page équipe ---------- */
 function team(t){
   const me=ls.get('me'), mine=me&&me.team===t;
-  let h=`<div class="teamhead"><span class="num xl">${t}</span><span class="lab">${mine?'Votre équipe':'Équipe'}</span></div>`;
+  let h=`<a class="back" href="#/">◀ Équipes</a><div class="teamhead"><span class="num xl">${t}</span><span class="lab">${mine?'Votre équipe':'Équipe'}</span></div>`;
   const r=ROT;
   if(r>=1&&r<=NR){
     const s=slot(t,r), n=r<NR?slot(t,r+1):null;
-    h+=`<div class="card now"><div class="lab">Maintenant · rotation ${r}</div><div class="act">${A[s.k][0]}</div><div class="who">${who(s)}</div>`+
+    h+=`<div class="card now"><div class="lab">Maintenant · rotation ${r}</div><div class="nm">${A[s.k][0]}</div><div class="who">${who(s)}</div>`+
        (n?`<div class="next">Ensuite : <b>${A[n.k][0]}</b> — ${who(n)}</div>`:'<div class="next">C\'est la dernière rotation !</div>')+'</div>';
   }else if(r<1){
     const s=slot(t,1);
-    h+=`<div class="card now"><div class="lab">Début à 14h00</div><div class="act">${A[s.k][0]}</div><div class="who">${who(s)}</div></div>`;
-  }else h+='<div class="card now"><div class="act">C\'est terminé, bravo !</div><div class="who">Rendez-vous pour la remise des prix.</div></div>';
+    h+=`<div class="card now"><div class="lab">Début à 14h00</div><div class="nm">${A[s.k][0]}</div><div class="who">${who(s)}</div></div>`;
+  }else h+='<div class="card now"><div class="nm">C\'est terminé, bravo !</div><div class="who">Rendez-vous pour la remise des prix.</div></div>';
   h+='<div class="card mut">Les points et le classement sont tenus par les organisateurs. Résultats à la remise des prix !</div>';
   h+='<h2>Votre parcours</h2>';
   for(let i=1;i<=NR;i++){
     const s=slot(t,i);
-    h+=`<div class="row${i===r?' cur':''}${i<r?' done':''}"><div class="t"><b>${i}</b>${hh(i)}</div><div class="bar" style="background:${A[s.k][1]}"></div><div class="d"><b>${A[s.k][0]}</b><div>${who(s)}</div></div></div>`;
+    h+=`<div class="row${i===r?' cur':''}${i<r?' done':''}"><div class="t"><b>${i}</b>${hh(i)}</div><div class="bar" style="background:${A[s.k][1]}"></div><div class="d"><b>${A[s.k][0]}</b>${i===r?'<span class="tag">En cours</span>':''}<div>${who(s)}</div></div></div>`;
   }
   h+='<p class="mut">Horaires indicatifs : suivez le signal des organisateurs.</p>';
   app.innerHTML=h;
@@ -184,9 +248,9 @@ async function scan(tok){
   app.innerHTML='<p>Connexion à votre équipe…</p>';
   try{
     const d=await rpc('team_view',{p_token:tok});
-    if(!d){app.innerHTML='<h1>Code inconnu</h1><p>Ce QR code n\'est pas reconnu. Demandez à un organisateur.</p><a class="btn wide" href="#/">Accueil</a>';return}
+    if(!d){app.innerHTML='<h1>Code inconnu</h1><p class="lead">Ce QR code n\'est pas reconnu. Demandez à un organisateur.</p><a class="btn wide" href="#/">Accueil</a>';return}
     ls.set('me',{team:d.team,token:tok});ls.del('view');setRot(d.rotation);location.replace('#/equipe/'+d.team);
-  }catch(e){app.innerHTML='<h1>Pas de réseau</h1><p>Impossible de vérifier le code pour le moment.</p><button class="wide dark" onclick="route()">Réessayer</button>'}
+  }catch(e){app.innerHTML='<h1>Pas de réseau</h1><p class="lead">Impossible de vérifier le code pour le moment.</p><button class="wide dark" onclick="route()">Réessayer</button>'}
 }
 
 /* ---------- Organisateurs ---------- */
@@ -196,7 +260,7 @@ const mx=k=>MX[k]||MB;
 let O={data:null,busy:false,open:{},act:null,scroll:false};
 const code=()=>{try{return sessionStorage.getItem('orga')||localStorage.getItem('orga')}catch(e){return null}};
 function orgaLogin(msg){
-  app.innerHTML=`<h1>Espace organisateurs</h1><div class="card"><p>Entrez le code organisateur.</p><input id="c" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Code" aria-label="Code organisateur"><button class="dark wide" id="go">Entrer</button>${msg?`<p style="color:var(--warn);font-weight:600">${msg}</p>`:''}</div>`;
+  app.innerHTML=`<h1>Espace organisateurs</h1><p class="lead">Réservé à l'équipe d'animation.</p><div class="card"><input id="c" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Code organisateur" aria-label="Code organisateur"><button class="dark wide" id="go">Entrer</button>${msg?`<p style="color:var(--warn);font-weight:600;margin:4px 0 0">${msg}</p>`:''}</div><p class="mut" style="text-align:center"><a class="link" href="#/">Retour à l'accueil</a></p>`;
   const go=async()=>{
     const v=$('#c').value.trim();if(!v)return;$('#go').disabled=true;
     try{const d=await rpc('orga_all',{p_code:v});if(!d)return orgaLogin('Code incorrect.');try{localStorage.setItem('orga',v)}catch(e){}O.data=d;setRot(d.rotation);orga()}
@@ -237,18 +301,18 @@ function orga(){
 function orgaHome(){
   const d=O.data, last=ls.get('act');
   O.act=null;
-  let h='<h1>Organisateurs</h1>';
+  let h='<a class="back" href="#/">◀ Accueil</a><h1>Organisateurs</h1>';
   h+=`<div class="card"><div class="mut">Rotation affichée aux équipes</div><div class="stepper"><button data-rot="${d.rotation-1}" ${d.rotation<1?'disabled':''} aria-label="Rotation précédente">◀</button><div>${rotLabel(d.rotation)}</div><button class="dark" data-rot="${d.rotation+1}" ${d.rotation>NR?'disabled':''} aria-label="Rotation suivante">▶</button></div></div>`;
   h+='<h2>Quelle activité animez-vous ?</h2>';
   if(last&&ACTS.includes(last))h+=`<a class="btn dark big wide" href="#/orga/${last}">Continuer · ${A[last][0]}</a>`;
   h+='<div class="acts">';
   for(const k of ACTS){
     const tot=k==='chasse'?NT:NR, n=k==='chasse'?d.chasse.length:done(k);
-    h+=`<a class="act" href="#/orga/${k}" style="--c:${A[k][1]}"><b>${A[k][0]}</b><small>${n}/${tot}${n>=tot?' ✓':''}</small></a>`;
+    h+=`<a class="act" href="#/orga/${k}" style="--c:${A[k][1]}"><span class="ai"><b>${A[k][0]}</b><span class="pb"><i style="width:${Math.round(n/tot*100)}%"></i></span></span><small>${n}/${tot}${n>=tot?' ✓':''}</small><span class="chev">›</span></a>`;
   }
   h+='</div>';
-  h+='<a class="btn wide" style="margin-top:16px" href="#/orga/classement">Classement</a>';
-  h+='<button class="wide" id="out">Se déconnecter</button>';
+  h+='<a class="btn wide" style="margin-top:18px" href="#/orga/classement">Voir le classement</a>';
+  h+='<button class="wide ghost" id="out">Se déconnecter</button>';
   app.innerHTML=h;
 }
 function orgaAct(k){
@@ -266,27 +330,32 @@ function orgaAct(k){
         const w=wins(r,k,m)||[0,0], np=w[0]+w[1], top=mx(k);
         if(np)sub+=' · '+w[0]+' – '+w[1]+(fin?` (${w[0]*PM}–${w[1]*PM} pts)`:' · manche '+(np+1)+'/'+MB);
         if(open){
-          body=`<div class="bo3"><div class="sc"><span class="num">${m.a[0]}</span><b>${w[0]} – ${w[1]}</b><span class="num">${m.b[0]}</span></div>`;
+          body=`<div class="pane"><div class="sc"><span class="num">${m.a[0]}</span><b>${w[0]} – ${w[1]}</b><span class="num">${m.b[0]}</span></div>`;
           if(fin)body+=`<div class="fin">${np} manches jouées · ${w[0]===w[1]?'égalité':(w[0]>w[1]?m.a[0]:m.b[0])+' gagne'} · ${w[0]*PM} – ${w[1]*PM} pts</div>`;
           if(np<top)body+=`<div class="ask">Qui gagne la manche ${np>=MB?'bonus ':''}${np+1} ?${np>=MB?' <span class="opt">facultative</span>':''}</div><div class="adds">`+
             `<button data-add="a" data-k="${k}" data-r="${r}" aria-label="Manche gagnée par l'équipe ${m.a[0]}"><span class="num">${m.a[0]}</span></button>`+
             `<button data-add="b" data-k="${k}" data-r="${r}" aria-label="Manche gagnée par l'équipe ${m.b[0]}"><span class="num">${m.b[0]}</span></button></div>`;
-          if(np)body+=`<button class="clr" data-clr="1" data-k="${k}" data-r="${r}">Effacer la rencontre</button>`;
+          if(np)body+=`<div class="fixl">Corriger une manche</div><div class="fix">`+
+            `<button data-sub="a" data-k="${k}" data-r="${r}" ${w[0]?'':'disabled'} aria-label="Retirer une manche à l'équipe ${m.a[0]}">− 1 manche <span class="num sm">${m.a[0]}</span></button>`+
+            `<button data-sub="b" data-k="${k}" data-r="${r}" ${w[1]?'':'disabled'} aria-label="Retirer une manche à l'équipe ${m.b[0]}">− 1 manche <span class="num sm">${m.b[0]}</span></button></div>`+
+            `<button class="clr" data-clr="1" data-k="${k}" data-r="${r}">Supprimer tout le résultat</button>`;
           body+='</div>';
         }
       }else{
         const o=options(m), pa=pts(r,k,m.a[0]), pb=pts(r,k,m.b[0]), sel=pa!==null?o.findIndex(x=>x[1]===pa&&x[2]===pb):-1;
         if(pa!==null)sub+=' · '+(sel>-1?o[sel][0]+` (${o[sel][1]}–${o[sel][2]})`:pa+'–'+pb);
         if(open){
-          body='<div class="opts">';
+          body='<div class="pane"><div class="opts">';
           o.forEach((x,i)=>{body+=`<button data-k="${k}" data-r="${r}" data-i="${i}" class="${pa===x[1]&&pb===x[2]?'on':''}">${x[0]}<span>${x[1]} – ${x[2]}</span></button>`});
+          body+='</div>';
+          if(pa!==null)body+=`<button class="clr" data-del="1" data-k="${k}" data-r="${r}">Supprimer le résultat</button>`;
           body+='</div>';
         }
       }
       h+=`<div class="card mch${live?' live':''}${fin?' ok':''}">`+
          `<button class="mhead" data-open="${r}" aria-expanded="${open}"><span class="mno">${r}</span><span class="mi"><span class="vs">${chips(m.a)}<em>contre</em>${chips(m.b)}</span><small>${sub}</small></span><span class="st">${fin?'✓':''}<em>${open?'▲':'▼'}</em></span></button>`+body+'</div>';
     }
-    h+=`<p class="mut">${bo3(k)?'Notez chaque manche dès qu\'elle est finie : le score est enregistré au fur et à mesure.'+(mx(k)>MB?` Au-delà de ${MB} manches, les ${mx(k)-MB} manches bonus rapportent autant que les autres.`:''):'Touchez le résultat pour l\'enregistrer, touchez-le à nouveau pour l\'effacer.'}</p>`;
+    h+=`<p class="mut">${bo3(k)?'Notez chaque manche dès qu\'elle est finie : le score est enregistré au fur et à mesure.'+(mx(k)>MB?` Au-delà de ${MB} manches, les ${mx(k)-MB} manches bonus rapportent autant que les autres.`:''):'Touchez le résultat pour l\'enregistrer.'} En cas d\'erreur, ouvrez la rotation et supprimez le résultat.</p>`;
   }
   app.innerHTML=h;
   if(O.scroll){O.scroll=false;const el=document.querySelector('.mch.live');if(el)setTimeout(()=>el.scrollIntoView({block:'center',behavior:'smooth'}),80)}
@@ -299,11 +368,11 @@ function chasse(){
     h+=`<div class="card mch${live?' live':''}"><div class="mhead static"><span class="mno">${r}</span><span class="mi"><span class="vs">${chips(m.teams)}</span><small>${hh(r)}${live?' · <b>en cours</b>':''}</small></span></div><div class="chlist">`;
     for(const t of m.teams){
       const c=d.chasse.find(x=>x.team===t);
-      h+=`<div class="ch"><div class="cht"><span class="num${c?' ok':''}">${t}</span>${c?`<small>${c.points} pts</small>`:''}</div><input inputmode="numeric" id="m${t}" placeholder="min" aria-label="Minutes équipe ${t}" value="${c?Math.floor(c.seconds/60):''}"><input inputmode="numeric" id="s${t}" placeholder="sec" aria-label="Secondes équipe ${t}" value="${c?c.seconds%60:''}"><button data-ch="${t}" class="${c?'':'dark'}">OK</button></div>`;
+      h+=`<div class="ch"><div class="cht"><span class="num${c?' ok':''}">${t}</span>${c?`<small>${c.points} pts</small>`:''}</div><input inputmode="numeric" id="m${t}" placeholder="min" aria-label="Minutes équipe ${t}" value="${c?Math.floor(c.seconds/60):''}"><input inputmode="numeric" id="s${t}" placeholder="sec" aria-label="Secondes équipe ${t}" value="${c?c.seconds%60:''}"><button data-ch="${t}" class="${c?'':'dark'}">OK</button><button class="del" data-chdel="${t}" ${c?'':'disabled'} aria-label="Supprimer le temps de l'équipe ${t}">✕</button></div>`;
     }
     h+='</div></div>';
   }
-  return h+'<p class="mut">Pour effacer un temps, videz les deux cases puis touchez OK.</p>';
+  return h+'<p class="mut">Touchez ✕ pour supprimer un temps déjà saisi.</p>';
 }
 function orgaRank(){
   const d=O.data, rows=[];
@@ -311,9 +380,10 @@ function orgaRank(){
   for(let t=1;t<=NT;t++){const e=d.results.filter(x=>x.team===t), c=d.chasse.find(x=>x.team===t);const ep=e.reduce((s,x)=>s+x.points,0), cp=c?c.points:0;rows.push({t,ep,cp,has:!!c,tot:ep+cp})}
   rows.sort((a,b)=>b.tot-a.tot||a.t-b.t);
   const fin=d.chasse.length===NT;
-  let h=`<a class="back" href="#/orga">◀ Activités</a><h1>Classement</h1><p class="mut">Visible uniquement ici. ${d.results.length} résultats d'équipe saisis${fin?'':' · chasse au trésor provisoire ('+d.chasse.length+'/'+NT+' temps)'}.</p><table><tr><th>Rang</th><th class="l">Éq.</th><th>Épreuves</th><th>Chasse</th><th>Total</th></tr>`;
-  rows.forEach(x=>{const rk=rows.findIndex(y=>y.tot===x.tot)+1;h+=`<tr><td><b>${rk}</b></td><td class="l"><span class="num sm">${x.t}</span></td><td>${x.ep}</td><td>${x.has?x.cp+(fin?'':'*'):'–'}</td><td><b>${x.tot}</b></td></tr>`});
-  app.innerHTML=h+'</table>';
+  let h=`<a class="back" href="#/orga">◀ Activités</a><h1>Classement</h1><p class="lead">Visible uniquement ici. ${d.results.length} résultats d'équipe saisis${fin?'':' · chasse au trésor provisoire ('+d.chasse.length+'/'+NT+' temps)'}.</p><div class="tw"><table><tr><th>Rang</th><th class="l">Éq.</th><th>Épreuves</th><th>Chasse</th><th>Total</th></tr>`;
+  const md=['🥇','🥈','🥉'];
+  rows.forEach(x=>{const rk=rows.findIndex(y=>y.tot===x.tot)+1;h+=`<tr${rk<=3?' class="top"':''}><td class="rk">${rk<=3?md[rk-1]:rk}</td><td class="l"><span class="num sm">${x.t}</span></td><td>${x.ep}</td><td>${x.has?x.cp+(fin?'':'*'):'–'}</td><td><b>${x.tot}</b></td></tr>`});
+  app.innerHTML=h+'</table></div>';
 }
 app.addEventListener('click',async e=>{
   const b=e.target.closest('button');if(!b||!location.hash.startsWith('#/orga')||!O.data)return;
@@ -323,19 +393,32 @@ app.addEventListener('click',async e=>{
   if(O.busy)return;
   let call, after;
   if(ds.rot!==undefined){const n=+ds.rot;call=()=>rpc('orga_rotation',{p_code:code(),p_n:n})}
-  else if(ds.add!==undefined||ds.clr!==undefined){
+  else if(ds.add!==undefined||ds.sub!==undefined||ds.clr!==undefined){
     const k=ds.k, r=+ds.r, m=manche(k,r), w=wins(r,k,m)||[0,0], clear=ds.clr!==undefined;
-    if(!clear&&w[0]+w[1]>=mx(k))return toast('Les '+mx(k)+' manches sont déjà notées');
-    if(!clear)w[ds.add==='a'?0:1]++;
-    const rows=[...m.a.map(t=>({team:t,points:clear?null:w[0]*PM,detail:dtl(w[0],w[1])})),...m.b.map(t=>({team:t,points:clear?null:w[1]*PM,detail:dtl(w[1],w[0])}))];
+    if(ds.add!==undefined){
+      if(w[0]+w[1]>=mx(k))return toast('Les '+mx(k)+' manches sont déjà notées');
+      w[ds.add==='a'?0:1]++;
+    }
+    if(ds.sub!==undefined){const i=ds.sub==='a'?0:1;if(!w[i])return toast('Aucune manche à retirer');w[i]--}
+    const empty=clear||w[0]+w[1]===0;
+    const rows=[...m.a.map(t=>({team:t,points:empty?null:w[0]*PM,detail:dtl(w[0],w[1])})),...m.b.map(t=>({team:t,points:empty?null:w[1]*PM,detail:dtl(w[1],w[0])}))];
     call=()=>rpc('orga_save',{p_code:code(),p_rotation:r,p_activity:k,p_rows:rows});
-    after=()=>{O.open[r]=clear||w[0]+w[1]<mx(k)};
+    after=()=>{O.open[r]=empty||w[0]+w[1]<mx(k)};
+  }
+  else if(ds.del!==undefined){
+    const k=ds.k, r=+ds.r, m=manche(k,r);
+    const rows=[...m.a,...m.b].map(t=>({team:t,points:null,detail:'Effacé'}));
+    call=()=>rpc('orga_save',{p_code:code(),p_rotation:r,p_activity:k,p_rows:rows});
+    after=()=>{O.open[r]=true};
   }
   else if(ds.k){
     const r=+ds.r, m=manche(ds.k,r), o=options(m)[+ds.i], clear=b.classList.contains('on');
     const rows=[...m.a.map(t=>({team:t,points:clear?null:o[1],detail:o[3]})),...m.b.map(t=>({team:t,points:clear?null:o[2],detail:o[4]}))];
     call=()=>rpc('orga_save',{p_code:code(),p_rotation:r,p_activity:ds.k,p_rows:rows});
     after=()=>{O.open[r]=clear};
+  }else if(ds.chdel!==undefined){
+    const t=+ds.chdel;
+    call=()=>rpc('orga_chasse',{p_code:code(),p_team:t,p_seconds:null});
   }else if(ds.ch){
     const t=+ds.ch, mv=$('#m'+t).value.trim(), sv=$('#s'+t).value.trim();
     let sec=null;
@@ -343,8 +426,9 @@ app.addEventListener('click',async e=>{
     call=()=>rpc('orga_chasse',{p_code:code(),p_team:t,p_seconds:sec});
   }else return;
   O.busy=true;b.disabled=true;
-  try{const ok=await call();if(!ok)throw 0;O.data=await rpc('orga_all',{p_code:code()});setRot(O.data.rotation);if(after)after();toast('Enregistré',true)}
-  catch(err){toast('Non enregistré : pas de réseau ?')}
+  const msg=ds.sub!==undefined?'Manche retirée':(ds.clr!==undefined||ds.del!==undefined||ds.chdel!==undefined)?'Supprimé':'Enregistré';
+  try{const ok=await call();if(!ok)throw 0;O.data=await rpc('orga_all',{p_code:code()});setRot(O.data.rotation);if(after)after();toast(msg,true)}
+  catch(err){toast('Action impossible : pas de réseau ?')}
   O.busy=false;orga();
 });
 
